@@ -98,7 +98,7 @@ window.PONUDE = [
     slika: "images/milano.webp",
     datum: "30. nov – 3. dec 2026.",
     trajanje: "3 noćenja",
-    cena: 285,
+    cena: 265,
     opis: "Katedrala Duomo, galerija Vitorio Emanuele i šoping — sa uključenim doručkom.",
     detalji: "Tri noćenja u Milanu. U cenu su uključeni povratni let, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
     ukljuceno: ["Povratna avio karta", "Smeštaj 3 noćenja", "Doručak"],
