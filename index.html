@@ -331,6 +331,12 @@
             </div>
 
             <div class="field">
+              <label for="osobe">Koliko osoba putuje?</label>
+              <input id="osobe" name="broj_osoba" type="number" inputmode="numeric" min="1" max="50" step="1" required placeholder="npr. 2">
+              <p class="field-error" id="osobe-greska"></p>
+            </div>
+
+            <div class="field">
               <label for="destinacija">Gde bi da putuješ? <span class="optional">(nije obavezno)</span></label>
               <input id="destinacija" name="destinacija" type="text" list="destinacije-lista" placeholder="npr. Rim, Grčka, bilo gde na moru">
               <datalist id="destinacije-lista"></datalist>

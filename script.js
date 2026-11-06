@@ -353,7 +353,7 @@
   }
 
   function proveriFormu(forma) {
-    var ime = forma.ime, email = forma.email, poruka = forma.poruka;
+    var ime = forma.ime, email = forma.email, osobe = forma.osobe, poruka = forma.poruka;
     var prvaGreska = null;
 
     if (!ime.value.trim()) { postaviGresku(ime, 'Upiši svoje ime.'); prvaGreska = prvaGreska || ime; }
@@ -362,6 +362,11 @@
     if (!email.value.trim()) { postaviGresku(email, 'Upiši e-mail adresu.'); prvaGreska = prvaGreska || email; }
     else if (!EMAIL_RE.test(email.value.trim())) { postaviGresku(email, 'E-mail adresa nije ispravna (npr. ime@primer.com).'); prvaGreska = prvaGreska || email; }
     else postaviGresku(email, '');
+
+    var broj = osobe.value.trim();
+    if (!broj) { postaviGresku(osobe, 'Upiši koliko osoba putuje.'); prvaGreska = prvaGreska || osobe; }
+    else if (!/^\d+$/.test(broj) || +broj < 1 || +broj > 50) { postaviGresku(osobe, 'Upiši broj osoba (npr. 2).'); prvaGreska = prvaGreska || osobe; }
+    else postaviGresku(osobe, '');
 
     if (!poruka.value.trim()) { postaviGresku(poruka, 'Napiši kratku poruku.'); prvaGreska = prvaGreska || poruka; }
     else postaviGresku(poruka, '');
@@ -398,6 +403,7 @@
       var podaci = {
         ime: forma.ime.value.trim(),
         email: forma.email.value.trim(),
+        osobe: forma.osobe.value.trim(),
         destinacija: forma.destinacija.value.trim(),
         poruka: forma.poruka.value.trim()
       };
@@ -427,6 +433,7 @@
       var tekst = 'Novi upit sa sajta Putuj jeftino\n\n' +
         'Ime: ' + podaci.ime + '\n' +
         'E-mail: ' + podaci.email + '\n' +
+        'Broj osoba: ' + podaci.osobe + '\n' +
         (podaci.destinacija ? 'Destinacija: ' + podaci.destinacija + '\n' : '') +
         '\nPoruka:\n' + podaci.poruka;
       var prozor = window.open(whatsappUrl(tekst), '_blank');
