@@ -62,6 +62,7 @@ window.PONUDE = [
     avioKompanija: "Air Serbia",
     dorucak: true,
     novo: true,
+    izdvojeno: true,
     primer: false
   },
   {
@@ -78,6 +79,7 @@ window.PONUDE = [
     ukljuceno: ["Povratna avio karta", "Smeštaj u hotelu, 3 noćenja", "Doručak"],
     dorucak: true,
     novo: true,
+    izdvojeno: true,
     primer: false
   },
   {
@@ -95,6 +97,7 @@ window.PONUDE = [
     avioKompanija: "Air Serbia",
     dorucak: true,
     novo: true,
+    izdvojeno: true,
     primer: false
   },
   {
@@ -140,7 +143,6 @@ window.PONUDE = [
     opis: "Koloseum, Fontana di Trevi i Vatikan — večni grad, idealan za produženi vikend.",
     detalji: "Tri noćenja u Rimu. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
     ukljuceno: ["Povratna avio karta", "Smeštaj 3 noćenja"],
-    izdvojeno: true,
     primer: false
   },
   {
@@ -156,7 +158,6 @@ window.PONUDE = [
     detalji: "Tri noćenja u Milanu. U cenu su uključeni povratni let, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
     ukljuceno: ["Povratna avio karta", "Smeštaj 3 noćenja", "Doručak"],
     dorucak: true,
-    izdvojeno: true,
     primer: false
   },
   {
@@ -172,7 +173,6 @@ window.PONUDE = [
     detalji: "Četiri noćenja na Malti. U cenu su uključeni povratni let, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
     ukljuceno: ["Povratna avio karta", "Smeštaj 4 noćenja", "Doručak"],
     dorucak: true,
-    izdvojeno: true,
     primer: false
   },
   {

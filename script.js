@@ -220,8 +220,8 @@
     if (!izdvojene.length) izdvojene = PONUDE;
     izdvojene = izdvojene.slice(0, 3);
     lista.innerHTML = izdvojene.map(function (p, i) {
-      return '<li><a class="hero-deal" href="/' + slug(p.destinacija) + '" style="--i:' + i + '" aria-label="' + esc(p.destinacija + (p.dorucak ? ' (sa doručkom)' : '') + ', ' + p.datum + ', od ' + formatCena(p.cena) + (popust(p) ? ', sniženo sa ' + formatCena(p.staraCena) : '')) + '">' +
-        '<img src="' + esc(p.slika) + '" alt="" width="76" height="76" decoding="async">' +
+      return '<li><a class="hero-deal" href="/' + slug(p.destinacija) + '" style="--i:' + i + '" aria-label="' + esc((p.novo ? 'Novo: ' : '') + p.destinacija + (p.dorucak ? ' (sa doručkom)' : '') + ', ' + p.datum + ', od ' + formatCena(p.cena) + (popust(p) ? ', sniženo sa ' + formatCena(p.staraCena) : '')) + '">' +
+        '<span class="hero-deal-media"><img src="' + esc(p.slika) + '" alt="" width="76" height="76" decoding="async">' + (p.novo ? '<b class="hero-deal-new">Novo</b>' : '') + '</span>' +
         '<span class="hero-deal-info"><strong>' + esc(p.destinacija) + (p.dorucak ? '<em class="hero-deal-dorucak"><svg aria-hidden="true"><use href="#i-cup"/></svg>+ doručak</em>' : '') + '</strong><small>' + esc(p.datum) + (p.trajanje ? ' · ' + esc(p.trajanje) : '') + '</small></span>' +
         '<span class="hero-deal-price' + (popust(p) ? ' is-sale' : '') + '"><small>' + (popust(p) ? '<s>' + esc(formatCena(p.staraCena)) + '</s> ' : '') + 'od</small><b>' + esc(formatCena(p.cena)) + '</b></span>' +
       '</a></li>';
