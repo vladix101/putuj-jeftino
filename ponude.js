@@ -19,6 +19,10 @@
      datum       – datum putovanja kao tekst (npr. "29. nov – 2. dec 2026.")
      trajanje    – npr. "4 noćenja"
      cena        – samo broj, u evrima (npr. 259)
+     staraCena   – (nije obavezno) prethodna cena. Ako je bar 20 € veća od
+                   nove cene, ponuda se prikazuje kao sniženje (precrtana
+                   stara cena i oznaka "Sniženo"). Kada sniženje prođe,
+                   samo obriši ovaj red.
      opis        – kratak opis za karticu (1–2 rečenice)
      detalji     – duži opis koji se vidi na "Saznaj više"
      ukljuceno   – lista stavki, svaka u navodnicima, odvojene zarezom
@@ -46,12 +50,14 @@ window.PONUDE = [
     drzava: "Kipar",
     kategorija: "more",
     slika: "images/larnaka.jpg",
-    datum: "23–27. nov 2026.",
-    trajanje: "4 noćenja",
-    cena: 255,
+    datum: "4–7. dec 2026.",
+    trajanje: "3 noćenja",
+    cena: 230,
+    staraCena: 255,
     opis: "Grad na obali Kipra, sa šetalištem uz more i starim delom grada nadomak plaže.",
-    detalji: "Četiri noćenja u Larnaki na Kipru. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
-    ukljuceno: ["Povratna avio karta", "Smeštaj 4 noćenja"],
+    detalji: "Tri noćenja u Larnaki na Kipru. U cenu su uključeni povratni let, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta", "Smeštaj 3 noćenja", "Doručak"],
+    dorucak: true,
     primer: false
   },
   {
@@ -60,12 +66,13 @@ window.PONUDE = [
     drzava: "Španija",
     kategorija: "more",
     slika: "images/alikante.jpg",
-    datum: "28. nov – 3. dec 2026.",
-    trajanje: "5 noćenja",
-    cena: 290,
+    datum: "24–28. nov 2026.",
+    trajanje: "4 noćenja",
+    cena: 245,
+    staraCena: 290,
     opis: "Španska obala, gradska plaža i tvrđava Santa Barbara koja se uzdiže iznad grada.",
-    detalji: "Pet noćenja u Alikanteu. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
-    ukljuceno: ["Povratna avio karta", "Smeštaj 5 noćenja"],
+    detalji: "Četiri noćenja u Alikanteu. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta", "Smeštaj 4 noćenja"],
     primer: false
   },
   {
@@ -74,9 +81,9 @@ window.PONUDE = [
     drzava: "Italija",
     kategorija: "grad",
     slika: "images/rim.webp",
-    datum: "29. nov – 2. dec 2026.",
+    datum: "6–9. dec 2026.",
     trajanje: "3 noćenja",
-    cena: 240,
+    cena: 270,
     opis: "Koloseum, Fontana di Trevi i Vatikan — večni grad, idealan za produženi vikend.",
     detalji: "Tri noćenja u Rimu. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
     ukljuceno: ["Povratna avio karta", "Smeštaj 3 noćenja"],
@@ -91,7 +98,7 @@ window.PONUDE = [
     slika: "images/milano.webp",
     datum: "30. nov – 3. dec 2026.",
     trajanje: "3 noćenja",
-    cena: 235,
+    cena: 285,
     opis: "Katedrala Duomo, galerija Vitorio Emanuele i šoping — sa uključenim doručkom.",
     detalji: "Tri noćenja u Milanu. U cenu su uključeni povratni let, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
     ukljuceno: ["Povratna avio karta", "Smeštaj 3 noćenja", "Doručak"],
@@ -105,9 +112,9 @@ window.PONUDE = [
     drzava: "Malta",
     kategorija: "more",
     slika: "images/malta.jpg",
-    datum: "6–10. dec 2026.",
+    datum: "24–28. nov 2026.",
     trajanje: "4 noćenja",
-    cena: 240,
+    cena: 255,
     opis: "Kamena Valeta, luke i zalivi Mediterana — ostrvo sa uključenim doručkom.",
     detalji: "Četiri noćenja na Malti. U cenu su uključeni povratni let, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
     ukljuceno: ["Povratna avio karta", "Smeštaj 4 noćenja", "Doručak"],
@@ -121,12 +128,13 @@ window.PONUDE = [
     drzava: "Španija",
     kategorija: "grad",
     slika: "images/madrid.webp",
-    datum: "7–11. dec 2026.",
-    trajanje: "4 noćenja",
-    cena: 310,
+    datum: "9–11. dec 2026.",
+    trajanje: "2 noćenja",
+    cena: 230,
+    staraCena: 310,
     opis: "Gran Via, muzej Prado i park Retiro — španska prestonica puna života.",
-    detalji: "Četiri noćenja u Madridu. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
-    ukljuceno: ["Povratna avio karta", "Smeštaj 4 noćenja"],
+    detalji: "Dva noćenja u Madridu. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta", "Smeštaj 2 noćenja"],
     primer: false
   },
   {
@@ -135,12 +143,13 @@ window.PONUDE = [
     drzava: "Francuska",
     kategorija: "grad",
     slika: "images/pariz.webp",
-    datum: "9–13. dec 2026.",
-    trajanje: "4 noćenja",
-    cena: 320,
+    datum: "7–9. dec 2026.",
+    trajanje: "2 noćenja",
+    cena: 245,
+    staraCena: 320,
     opis: "Ajfelova kula, Luvr i šetnja Senom — Pariz u decembru.",
-    detalji: "Četiri noćenja u Parizu. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
-    ukljuceno: ["Povratna avio karta", "Smeštaj 4 noćenja"],
+    detalji: "Dva noćenja u Parizu. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta", "Smeštaj 2 noćenja"],
     primer: false
   },
   {
@@ -149,12 +158,13 @@ window.PONUDE = [
     drzava: "Francuska",
     kategorija: "more",
     slika: "images/nica.webp",
-    datum: "9–13. dec 2026.",
-    trajanje: "4 noćenja",
-    cena: 270,
+    datum: "5–10. dec 2026.",
+    trajanje: "5 noćenja",
+    cena: 250,
+    staraCena: 270,
     opis: "Azurna obala, Promenada Engleza i stari grad — francuska rivijera.",
-    detalji: "Četiri noćenja u Nici. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
-    ukljuceno: ["Povratna avio karta", "Smeštaj 4 noćenja"],
+    detalji: "Pet noćenja u Nici. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta", "Smeštaj 5 noćenja"],
     primer: false
   },
   {
@@ -163,12 +173,13 @@ window.PONUDE = [
     drzava: "Španija",
     kategorija: "grad",
     slika: "images/barselona.webp",
-    datum: "14–17. dec 2026.",
-    trajanje: "3 noćenja",
-    cena: 255,
+    datum: "12–14. dec 2026.",
+    trajanje: "2 noćenja",
+    cena: 225,
+    staraCena: 255,
     opis: "Gaudijeva Sagrada Familija, La Rambla i gotička četvrt — grad na moru.",
-    detalji: "Tri noćenja u Barseloni. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
-    ukljuceno: ["Povratna avio karta", "Smeštaj 3 noćenja"],
+    detalji: "Dva noćenja u Barseloni. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta", "Smeštaj 2 noćenja"],
     primer: false
   }
 ];

@@ -43,6 +43,23 @@
       .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
 
+  // Sniženje se prikazuje ako je stara cena bar 20 € veća od nove (isto kao u build.js)
+  function popust(p) {
+    var razlika = (Number(p.staraCena) || 0) - p.cena;
+    return razlika >= 20 ? razlika : 0;
+  }
+
+  function cenaHtml(p, labela) {
+    var pop = popust(p);
+    return '<div class="offer-price' + (pop ? ' is-sale' : '') + '"><span>' + labela +
+      (pop ? ' <s>' + esc(formatCena(p.staraCena)) + '</s>' : '') + '</span><strong>' + esc(formatCena(p.cena)) + '</strong><small>po osobi</small></div>';
+  }
+
+  function popustBadge(p) {
+    var pop = popust(p);
+    return pop ? '<span class="offer-badge offer-badge--popust">Sniženo −' + esc(formatCena(pop)) + '</span>' : '';
+  }
+
   function nadjiPonudu(id) {
     for (var i = 0; i < PONUDE.length; i++) if (PONUDE[i].id === id) return PONUDE[i];
     return null;
@@ -140,6 +157,7 @@
           '<img src="' + esc(p.slika) + '" alt="' + esc(p.destinacija + ', ' + p.drzava + ' — jeftino putovanje') + '" width="900" height="600" loading="lazy" decoding="async">' +
           (p.primer ? '<span class="offer-badge">Primer ponude</span>' : '') +
           (p.dorucak ? '<span class="offer-badge offer-badge--dorucak"><svg aria-hidden="true"><use href="#i-cup"/></svg>Doručak uključen</span>' : '') +
+          popustBadge(p) +
           (kat ? '<span class="offer-cat">' + esc(kat) + '</span>' : '') +
         '</div>' +
         '<div class="offer-body">' +
@@ -152,7 +170,7 @@
           '</ul>' +
           '<p class="offer-desc">' + esc(p.opis) + '</p>' +
           '<div class="offer-foot">' +
-            '<div class="offer-price"><span>već od</span><strong>' + esc(formatCena(p.cena)) + '</strong><small>po osobi</small></div>' +
+            cenaHtml(p, 'već od') +
             '<div class="offer-actions">' +
               '<a class="btn btn-ghost btn-sm" href="/' + slug(p.destinacija) + '" aria-label="Saznaj više o ponudi ' + esc(p.destinacija) + '">Saznaj više</a>' +
               '<button class="btn btn-primary btn-sm" type="button" data-upit="' + esc(p.id) + '" aria-label="Pošalji upit za ' + esc(p.destinacija) + '">Pošalji upit</button>' +
@@ -196,10 +214,10 @@
     if (!izdvojene.length) izdvojene = PONUDE;
     izdvojene = izdvojene.slice(0, 3);
     lista.innerHTML = izdvojene.map(function (p, i) {
-      return '<li><a class="hero-deal" href="/' + slug(p.destinacija) + '" style="--i:' + i + '" aria-label="' + esc(p.destinacija + (p.dorucak ? ' (sa doručkom)' : '') + ', ' + p.datum + ', od ' + formatCena(p.cena)) + '">' +
+      return '<li><a class="hero-deal" href="/' + slug(p.destinacija) + '" style="--i:' + i + '" aria-label="' + esc(p.destinacija + (p.dorucak ? ' (sa doručkom)' : '') + ', ' + p.datum + ', od ' + formatCena(p.cena) + (popust(p) ? ', sniženo sa ' + formatCena(p.staraCena) : '')) + '">' +
         '<img src="' + esc(p.slika) + '" alt="" width="76" height="76" decoding="async">' +
         '<span class="hero-deal-info"><strong>' + esc(p.destinacija) + (p.dorucak ? '<em class="hero-deal-dorucak"><svg aria-hidden="true"><use href="#i-cup"/></svg>+ doručak</em>' : '') + '</strong><small>' + esc(p.datum) + (p.trajanje ? ' · ' + esc(p.trajanje) : '') + '</small></span>' +
-        '<span class="hero-deal-price"><small>od</small><b>' + esc(formatCena(p.cena)) + '</b></span>' +
+        '<span class="hero-deal-price' + (popust(p) ? ' is-sale' : '') + '"><small>' + (popust(p) ? '<s>' + esc(formatCena(p.staraCena)) + '</s> ' : '') + 'od</small><b>' + esc(formatCena(p.cena)) + '</b></span>' +
       '</a></li>';
     }).join('');
     var tag = $('#hero-panel-tag');
@@ -258,6 +276,7 @@
         '<img src="' + esc(p.slika) + '" alt="' + esc(p.destinacija + ', ' + p.drzava + ' — jeftino putovanje') + '" width="900" height="600">' +
         (p.primer ? '<span class="offer-badge">Primer ponude</span>' : '') +
         (p.dorucak ? '<span class="offer-badge offer-badge--dorucak"><svg aria-hidden="true"><use href="#i-cup"/></svg>Doručak uključen</span>' : '') +
+        popustBadge(p) +
         (kat ? '<span class="offer-cat">' + esc(kat) + '</span>' : '') +
         '<button class="dialog-close" type="button" data-zatvori aria-label="Zatvori"><svg aria-hidden="true"><use href="#i-close"/></svg></button>' +
       '</div>' +
@@ -273,7 +292,7 @@
         (ukljuceno ? '<h3>Ponuda uključuje</h3><ul class="dialog-list">' + ukljuceno + '</ul>' : '') +
         (p.primer ? '<p class="dialog-note"><strong>Napomena:</strong> ovo je primer ponude za prikaz izgleda sajta, a ne aktivna ponuda. Pošalji upit i proverićemo trenutne mogućnosti za ovu destinaciju.</p>' : '') +
         '<div class="dialog-foot">' +
-          '<div class="offer-price"><span>već od</span><strong>' + esc(formatCena(p.cena)) + '</strong><small>po osobi</small></div>' +
+          cenaHtml(p, 'već od') +
           '<div class="offer-actions">' +
             '<a class="btn btn-wa btn-sm" href="' + esc(whatsappUrl(waPoruka)) + '" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg> WhatsApp</a>' +
             '<button class="btn btn-primary btn-sm" type="button" data-upit="' + esc(p.id) + '">Pošalji upit</button>' +
