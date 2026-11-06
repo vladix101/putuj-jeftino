@@ -1580,3 +1580,10 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 .dest-chips .dest-chip-price s { font-weight: 600; opacity: .75; }
 .dest-card-price s { display: block; color: var(--muted); font-size: .8rem; font-weight: 500; text-align: right; }
 .dest-card-price.is-sale { color: var(--sale); }
+
+/* ---------- Oznaka "Novo" i avio-kompanija ---------- */
+.offer-badge--novo { left: auto; right: 14px; background: #FFC93C; color: var(--navy-950); box-shadow: 0 6px 18px rgba(7, 23, 48, .25); }
+.offer-badge--novo ~ .offer-badge--popust { top: 52px; }
+.offer-meta .meta-avio { color: var(--navy-800); font-weight: 600; }
+.dest-new { display: inline-block; margin-left: .35rem; padding: .12rem .5rem; border-radius: 999px; background: #FFC93C; color: var(--navy-950); font-family: var(--font-body); font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; }
+.dest-chips .dest-chip-new { border-color: #FFC93C; background: #FFC93C; color: var(--navy-950); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }

@@ -29,6 +29,9 @@
      primer      – true = ponuda je PRIMER (prikazuje oznaku "Primer ponude")
                    false = stvarna, aktivna ponuda
      dorucak     – true = na kartici se ističe oznaka "Doručak uključen"
+     novo        – true = na ponudi se prikazuje oznaka "Novo"
+     avioKompanija – (nije obavezno) npr. "Air Serbia"; prikazuje se na
+                   kartici i na stranici destinacije
      izdvojeno   – true = ponuda se prikazuje u "Izdvojene ponude" na vrhu
                    naslovne strane (najviše 3; ako nijedna nije označena,
                    prikazuju se prve tri ponude)
@@ -44,6 +47,56 @@ window.KATEGORIJE = {
 };
 
 window.PONUDE = [
+  {
+    id: "stokholm-januar",
+    destinacija: "Stokholm",
+    drzava: "Švedska",
+    kategorija: "grad",
+    slika: "images/stokholm.jpg",
+    datum: "16–19. jan 2027.",
+    trajanje: "3 noćenja",
+    cena: 310,
+    opis: "Stari grad Gamla Stan, muzej Vasa i zimska bajka na vodi — let sa Air Serbia i hotel sa doručkom.",
+    detalji: "Tri noćenja u Stokholmu, u hotelu sa doručkom. U cenu su uključeni povratni let sa Air Serbia, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta Air Serbia", "Smeštaj u hotelu, 3 noćenja", "Doručak"],
+    avioKompanija: "Air Serbia",
+    dorucak: true,
+    novo: true,
+    primer: false
+  },
+  {
+    id: "malme-decembar",
+    destinacija: "Malme",
+    drzava: "Švedska",
+    kategorija: "grad",
+    slika: "images/malme.jpg",
+    datum: "11–14. dec 2026.",
+    trajanje: "3 noćenja",
+    cena: 270,
+    opis: "Neboder Turning Torso, šarmantni stari trgovi i Kopenhagen nadomak grada — hotel sa doručkom.",
+    detalji: "Tri noćenja u Malmeu, u hotelu sa doručkom. U cenu su uključeni povratni let, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta", "Smeštaj u hotelu, 3 noćenja", "Doručak"],
+    dorucak: true,
+    novo: true,
+    primer: false
+  },
+  {
+    id: "atina-januar",
+    destinacija: "Atina",
+    drzava: "Grčka",
+    kategorija: "grad",
+    slika: "images/atina.jpg",
+    datum: "11–14. jan 2027.",
+    trajanje: "3 noćenja",
+    cena: 265,
+    opis: "Akropolj, Plaka i grčka kuhinja usred zime — let sa Air Serbia i hotel sa doručkom.",
+    detalji: "Tri noćenja u Atini, u hotelu sa doručkom. U cenu su uključeni povratni let sa Air Serbia, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta Air Serbia", "Smeštaj u hotelu, 3 noćenja", "Doručak"],
+    avioKompanija: "Air Serbia",
+    dorucak: true,
+    novo: true,
+    primer: false
+  },
   {
     id: "larnaka-novembar",
     destinacija: "Larnaka",

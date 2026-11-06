@@ -282,5 +282,92 @@ window.DESTINACIJE = {
       "Za Sagradu Familiju i Park Guelj kupi karte unapred.",
       "Karta za više vožnji isplatljivija je od pojedinačnih karata za metro."
     ]
+  },
+
+  stokholm: {
+    naziv: "Stokholm",
+    drzava: "Švedska",
+    slika: "images/stokholm.jpg",
+    u: "u Stokholm",
+    lokativ: "u Stokholmu",
+    uvod: [
+      "Stokholm je švedska prestonica izgrađena na četrnaest ostrva, gde se srednjovekovne ulice starog grada prepliću sa modernim dizajnom, muzejima i vodom na svakom koraku. Zimi grad dobija posebnu atmosferu — svetla u izlozima, tople kafeterije i šetnje uz zaleđene obale.",
+      "Uz let sa Air Serbia iz Beograda i hotel sa doručkom, ovo je jedno od retkih jeftinih putovanja na sever Evrope koje je i jednostavno i udobno."
+    ],
+    znamenitosti: [
+      { naziv: "Gamla Stan", opis: "Stari grad na ostrvu, sa uskim kaldrmisanim ulicama, šarenim fasadama i trgom Stortorget. Najlepši deo Stokholma za lutanje." },
+      { naziv: "Kraljevska palata", opis: "Jedna od najvećih palata u Evropi, u samom Gamla Stanu. Ispred nje se održava smena kraljevske garde." },
+      { naziv: "Muzej Vasa", opis: "Ratni brod iz 17. veka koji je potonuo na svojoj prvoj plovidbi i izvađen iz mora posle više od tri veka — jedan od najposećenijih muzeja u Skandinaviji." },
+      { naziv: "Skansen", opis: "Muzej na otvorenom na ostrvu Djurgården, sa starim švedskim kućama i životinjama severa." },
+      { naziv: "Gradska kuća", opis: "Zgrada od crvene cigle na obali, u kojoj se svake godine održava banket posle dodele Nobelovih nagrada. Sa tornja se pruža pogled na grad." },
+      { naziv: "Umetnost u metrou", opis: "Mnoge stanice stokholmskog metroa ukrašene su slikama i skulpturama, pa se vožnja metroom pretvara u obilazak galerije." }
+    ],
+    transfer: [
+      "Glavni aerodrom Arlanda nalazi se severno od grada. Do Centralne stanice vozi brzi voz Arlanda ekspres, a postoje i prigradski voz i aerodromski autobusi.",
+      "U PDF vodiču dobijaš uputstvo za tvoj hotel: koji prevoz da uzmeš, gde da siđeš i kako da se vratiš na aerodrom na dan polaska."
+    ],
+    saveti: [
+      "U Švedskoj se skoro svuda plaća karticom, a gotovina se retko koristi. Valuta je švedska kruna.",
+      "U januaru je hladno i dani su kratki — ponesi toplu jaknu, kapu i rukavice.",
+      "Probaj fiku: pauzu za kafu i cimet-rolnicu, švedsku svakodnevnu tradiciju."
+    ]
+  },
+
+  malme: {
+    naziv: "Malme",
+    drzava: "Švedska",
+    slika: "images/malme.jpg",
+    u: "u Malme",
+    lokativ: "u Malmeu",
+    uvod: [
+      "Malme je treći po veličini grad u Švedskoj, na samom jugu zemlje, sa šarmantnim starim trgovima, parkovima i modernim kvartom uz more. Grad je dovoljno mali da ga obiđeš peške, a pun je kafića, restorana i skandinavskog dizajna.",
+      "Velika prednost je i položaj: preko mosta Eresund vozom se za kratko stiže do Kopenhagena, pa jednim jeftinim putovanjem vidiš dve zemlje."
+    ],
+    znamenitosti: [
+      { naziv: "Turning Torso", opis: "Neboder koji se uvija oko svoje ose, delo arhitekte Santjaga Kalatrave i simbol modernog Malmea." },
+      { naziv: "Lila torj i Stortorj", opis: "Dva trga u starom delu grada. Lila torj je mali trg sa starim kućama i kafićima, idealan za večernji izlazak." },
+      { naziv: "Dvorac Malmehus", opis: "Najstarija sačuvana renesansna tvrđava u Skandinaviji, danas sa muzejima, okružena parkovima." },
+      { naziv: "Plaža Ribersborg i hladno kupatilo", opis: "Gradska plaža sa drvenim kupatilom na moru, gde se Šveđani kupaju i zimi, a posle se greju u sauni." },
+      { naziv: "Kvart Vestra Hamnen", opis: "Moderni kvart uz more, sa šetalištem i pogledom na most Eresund." },
+      { naziv: "Izlet u Kopenhagen", opis: "Voz preko mosta Eresund vozi do glavne stanice u Kopenhagenu — savršen jednodnevni izlet." }
+    ],
+    transfer: [
+      "Malme ima svoj aerodrom, a mnogi letovi sleću i na aerodrom u Kopenhagenu, odakle voz preko mosta Eresund stiže do glavne stanice u Malmeu za oko dvadesetak minuta.",
+      "U PDF vodiču dobijaš uputstvo za tvoj hotel i aerodrom na koji sleće tvoj let: koji prevoz da uzmeš i kako da se vratiš na aerodrom na dan polaska."
+    ],
+    saveti: [
+      "U Švedskoj se skoro svuda plaća karticom. Valuta je švedska kruna, a u Danskoj danska kruna.",
+      "Za izlet u Kopenhagen ponesi pasoš ili ličnu kartu, jer se dokumenta ponekad proveravaju na granici.",
+      "U decembru je hladno i rano pada mrak — ponesi toplu garderobu."
+    ]
+  },
+
+  atina: {
+    naziv: "Atina",
+    drzava: "Grčka",
+    slika: "images/atina.jpg",
+    u: "u Atinu",
+    lokativ: "u Atini",
+    uvod: [
+      "Atina je jedan od najstarijih gradova na svetu, gde se iznad modernog grada uzdiže Akropolj sa Partenonom. Antički hramovi, živahni kvartovi, pijace i taverne čine je savršenom za nekoliko dana punih istorije i dobre hrane.",
+      "U januaru je Atina mirnija nego leti, bez gužvi na znamenitostima i sa blagim zimskim danima. Uz let sa Air Serbia iz Beograda i hotel sa doručkom, ovo je odlično jeftino putovanje za početak godine."
+    ],
+    znamenitosti: [
+      { naziv: "Akropolj i Partenon", opis: "Najpoznatiji simbol antičke Grčke, na steni iznad grada. Najbolje je otići rano ujutru, pre gužve." },
+      { naziv: "Muzej Akropolja", opis: "Moderan muzej u podnožju Akropolja, sa originalnim skulpturama i staklenim podom kroz koji se vide ostaci starog grada." },
+      { naziv: "Plaka i Anafiotika", opis: "Najstariji kvart Atine, sa uskim ulicama, tavernama i belim kućicama u Anafiotici, koje podsećaju na ostrva." },
+      { naziv: "Antička agora", opis: "Centar javnog života stare Atine, sa jednim od najbolje očuvanih grčkih hramova — Hefestovim hramom." },
+      { naziv: "Trg Sintagma", opis: "Glavni trg ispred Parlamenta, gde se održava smena počasne garde u tradicionalnim uniformama." },
+      { naziv: "Brdo Likavitos", opis: "Najviša tačka u centru grada, sa koje se pruža pogled na celu Atinu i Akropolj — najlepše pred zalazak sunca." }
+    ],
+    transfer: [
+      "Aerodrom Atina povezan je sa centrom linijom metroa koja vozi do trga Sintagma, a postoje i ekspresni autobusi i taksi.",
+      "U PDF vodiču dobijaš uputstvo za tvoj hotel: koji prevoz da uzmeš, gde da siđeš i kako da se vratiš na aerodrom na dan polaska."
+    ],
+    saveti: [
+      "Ponesi udobnu obuću — staze na Akropolju su od glatkog kamena i mogu biti klizave.",
+      "Valuta je evro, pa ne moraš da menjaš novac.",
+      "Probaj suvlaki, đros i grčku salatu u nekoj od taverni u Plaki."
+    ]
   }
 };

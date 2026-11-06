@@ -163,6 +163,8 @@ function stranica(d, sveDest) {
   var lok = d.lokativ || 'na destinaciji';
   var kat = KATEGORIJE[d.kategorija] || '';
   var imaDorucak = d.ponude.some(function (p) { return p.dorucak; });
+  var jeNovo = d.ponude.some(function (p) { return p.novo; });
+  var avio = imaPonudu ? (prva.avioKompanija || '') : '';
 
   var h1 = d.u
     ? 'Jeftina putovanja <em>' + esc(d.u) + '</em> iz Beograda'
@@ -173,7 +175,7 @@ function stranica(d, sveDest) {
     (imaPonudu ? ' – od ' + formatCena(d.najniza) : '') + ' | Putuj jeftino';
 
   var opis = imaPonudu
-    ? 'Jeftino putovanje ' + (d.u || 'za ' + d.naziv) + ': povratni let iz Beograda i smeštaj za ' + prva.trajanje +
+    ? 'Jeftino putovanje ' + (d.u || 'za ' + d.naziv) + ': povratni let ' + (avio ? avio + ' ' : '') + 'iz Beograda i smeštaj za ' + prva.trajanje +
       (imaDorucak ? ' sa doručkom' : '') + ', od ' + formatCena(d.najniza) + ' po osobi' + (d.popust ? ' (sniženo sa ' + formatCena(d.staraCena) + ')' : '') + ' za dve ili više osoba. Uz ponudu dobijaš PDF vodič i uputstvo za transfer.'
     : 'Jeftina putovanja ' + (d.u || 'za ' + d.naziv) + ' iz Beograda: let i smeštaj po povoljnoj ceni, uz PDF vodič šta posetiti i uputstvo za transfer do hotela.';
 
@@ -190,7 +192,7 @@ function stranica(d, sveDest) {
     stavke += '<li><svg aria-hidden="true"><use href="#i-check"/></svg><span>PDF vodič: šta posetiti i transfer do hotela</span></li>';
     return '' +
       '<div class="dest-offer">' +
-        '<p class="offer-country">Ponuda' + (p.primer ? ' · primer' : '') + '</p>' +
+        '<p class="offer-country">Ponuda' + (p.primer ? ' · primer' : '') + (p.novo ? ' <span class="dest-new">Novo</span>' : '') + '</p>' +
         '<h2 class="dest-offer-title">' + esc(d.naziv) + (p.trajanje ? ', ' + esc(p.trajanje) : '') + '</h2>' +
         '<ul class="offer-meta">' +
           '<li><svg aria-hidden="true"><use href="#i-calendar"/></svg><span class="visually-hidden">Datum: </span>' + esc(p.datum) + '</li>' +
@@ -224,7 +226,7 @@ function stranica(d, sveDest) {
 
   var prednosti = '' +
     '<ul class="dest-features">' +
-      '<li><h3><svg aria-hidden="true"><use href="#i-plane"/></svg>Let iz Beograda</h3><p>Polazak je sa beogradskog aerodroma „Nikola Tesla“, a povratna avio karta je uključena u cenu.</p></li>' +
+      '<li><h3><svg aria-hidden="true"><use href="#i-plane"/></svg>Let iz Beograda</h3><p>Polazak je sa beogradskog aerodroma „Nikola Tesla“' + (avio ? ', let je sa ' + esc(avio) : '') + ', a povratna avio karta je uključena u cenu.</p></li>' +
       '<li><h3><svg aria-hidden="true"><use href="#i-moon"/></svg>Smeštaj' + (imaPonudu && prva.trajanje ? ' ' + esc(prva.trajanje) : '') + '</h3><p>Smeštaj za ceo boravak ' + esc(lok) + ' je uključen u cenu' + (imaDorucak ? ', zajedno sa doručkom' : '') + '.</p></li>' +
       '<li><h3><svg aria-hidden="true"><use href="#i-info"/></svg>PDF vodič</h3><p>Dobijaš PDF fajl sa preporukama šta da posetiš, gde da prošetaš i šta da probaš ' + esc(lok) + '.</p></li>' +
       '<li><h3><svg aria-hidden="true"><use href="#i-arrow"/></svg>Uputstvo za transfer</h3><p>U istom PDF-u je i uputstvo kako da stigneš od aerodroma do hotela i nazad, korak po korak.</p></li>' +
@@ -261,7 +263,7 @@ function stranica(d, sveDest) {
     '</section>' : '';
 
   var pitanja = [
-    ['Da li je let iz Beograda?', 'Da. Let polazi sa beogradskog aerodroma „Nikola Tesla“, a povratna avio karta je uključena u cenu.'],
+    ['Da li je let iz Beograda?', 'Da. Let polazi sa beogradskog aerodroma „Nikola Tesla“' + (avio ? ' i leti se sa ' + avio : '') + ', a povratna avio karta je uključena u cenu.'],
     ['Da li cena važi i ako putujem sam ili sama?', 'Objavljena cena važi kada putuju dve ili više osoba. Ako putuješ sam ili sama, pošalji nam upit i javićemo ti tačnu cenu za jednu osobu.'],
     ['Šta dobijam u PDF vodiču?', 'Uz ponudu dobijaš PDF fajl sa preporukama šta da posetiš ' + lok + ' i uputstvom kako da stigneš od aerodroma do hotela i nazad.'],
     ['Da li je prtljag uključen?', 'Uslovi za prtljag zavise od avio-kompanije i karte. Pre rezervacije ti tačno kažemo šta je uključeno, a šta može da se doplati.'],
@@ -288,7 +290,7 @@ function stranica(d, sveDest) {
         '<ul class="dest-cards">' + ostale.map(function (x) {
           return '<li class="dest-card"><a href="/' + x.slug + '">' +
             '<img src="/' + esc(x.slika) + '" alt="' + esc(x.naziv + ', ' + x.drzava + ' — jeftino putovanje') + '" width="900" height="600" loading="lazy" decoding="async">' +
-            '<span class="dest-card-body"><span><strong>' + esc(x.naziv) + '</strong><small>' + esc(x.drzava) + '</small></span>' +
+            '<span class="dest-card-body"><span><strong>' + esc(x.naziv) + (x.ponude.some(function (p) { return p.novo; }) ? ' <span class="dest-new">Novo</span>' : '') + '</strong><small>' + esc(x.drzava) + '</small></span>' +
             (x.najniza != null ? '<span class="dest-card-price' + (x.popust ? ' is-sale' : '') + '">' + (x.popust ? '<s>' + esc(formatCena(x.staraCena)) + '</s>' : '') + '<small>od</small>' + esc(formatCena(x.najniza)) + '</span>' : '') +
             '</span></a></li>';
         }).join('') + '</ul>' +
@@ -335,9 +337,10 @@ function stranica(d, sveDest) {
   if (!ld['@graph'][2].offers.length) delete ld['@graph'][2].offers;
 
   var cipovi = '' +
+    (jeNovo ? '<li class="dest-chip-new">Novo</li>' : '') +
     (imaPonudu ? '<li><svg aria-hidden="true"><use href="#i-calendar"/></svg>' + esc(prva.datum) + '</li>' : '') +
     (imaPonudu && prva.trajanje ? '<li><svg aria-hidden="true"><use href="#i-moon"/></svg>' + esc(prva.trajanje) + '</li>' : '') +
-    '<li><svg aria-hidden="true"><use href="#i-plane"/></svg>Let iz Beograda</li>' +
+    '<li><svg aria-hidden="true"><use href="#i-plane"/></svg>Let iz Beograda' + (avio ? ' · ' + esc(avio) : '') + '</li>' +
     (imaDorucak ? '<li><svg aria-hidden="true"><use href="#i-cup"/></svg>Doručak uključen</li>' : '') +
     (d.popust ? '<li class="dest-chip-sale">Sniženo −' + esc(formatCena(d.popust)) + '</li>' : '') +
     (imaPonudu ? '<li class="dest-chip-price">' + (d.popust ? '<s>' + esc(formatCena(d.staraCena)) + '</s> ' : '') + 'od ' + esc(formatCena(d.najniza)) + ' po osobi</li>' : '');

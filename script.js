@@ -57,7 +57,12 @@
 
   function popustBadge(p) {
     var pop = popust(p);
-    return pop ? '<span class="offer-badge offer-badge--popust">Sniženo −' + esc(formatCena(pop)) + '</span>' : '';
+    return (p.novo ? '<span class="offer-badge offer-badge--novo">Novo</span>' : '') +
+      (pop ? '<span class="offer-badge offer-badge--popust">Sniženo −' + esc(formatCena(pop)) + '</span>' : '');
+  }
+
+  function avioHtml(p) {
+    return p.avioKompanija ? '<li class="meta-avio"><svg aria-hidden="true"><use href="#i-plane"/></svg>Let sa ' + esc(p.avioKompanija) + '</li>' : '';
   }
 
   function nadjiPonudu(id) {
@@ -167,6 +172,7 @@
             '<li><svg aria-hidden="true"><use href="#i-calendar"/></svg><span class="visually-hidden">Datum: </span>' + esc(p.datum) + '</li>' +
             (p.trajanje ? '<li><svg aria-hidden="true"><use href="#i-moon"/></svg>' + esc(p.trajanje) + '</li>' : '') +
             (p.dorucak ? '<li class="meta-dorucak"><svg aria-hidden="true"><use href="#i-cup"/></svg>sa doručkom</li>' : '') +
+            avioHtml(p) +
           '</ul>' +
           '<p class="offer-desc">' + esc(p.opis) + '</p>' +
           '<div class="offer-foot">' +
@@ -286,6 +292,7 @@
         '<ul class="offer-meta">' +
           '<li><svg aria-hidden="true"><use href="#i-calendar"/></svg>' + esc(p.datum) + '</li>' +
           (p.trajanje ? '<li><svg aria-hidden="true"><use href="#i-moon"/></svg>' + esc(p.trajanje) + '</li>' : '') +
+          avioHtml(p) +
         '</ul>' +
         '<p class="dialog-text">' + esc(p.detalji || p.opis) + '</p>' +
         '<p class="dialog-page-link"><a href="/' + slug(p.destinacija) + '">Sve o putovanju, šta posetiti i transfer do hotela <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>' +
