@@ -34,6 +34,15 @@
     return url;
   }
 
+  // "Barselona" -> "barselona": adresa stranice destinacije (isto kao u build.js)
+  function slug(tekst) {
+    var mapa = { 'č': 'c', 'ć': 'c', 'š': 's', 'ž': 'z', 'đ': 'dj' };
+    return String(tekst).toLowerCase()
+      .replace(/[čćšžđ]/g, function (z) { return mapa[z]; })
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+
   function nadjiPonudu(id) {
     for (var i = 0; i < PONUDE.length; i++) if (PONUDE[i].id === id) return PONUDE[i];
     return null;
@@ -135,7 +144,7 @@
         '</div>' +
         '<div class="offer-body">' +
           '<p class="offer-country">' + esc(p.drzava) + '</p>' +
-          '<h3>' + esc(p.destinacija) + '</h3>' +
+          '<h3><a href="/' + slug(p.destinacija) + '">' + esc(p.destinacija) + '</a></h3>' +
           '<ul class="offer-meta">' +
             '<li><svg aria-hidden="true"><use href="#i-calendar"/></svg><span class="visually-hidden">Datum: </span>' + esc(p.datum) + '</li>' +
             (p.trajanje ? '<li><svg aria-hidden="true"><use href="#i-moon"/></svg>' + esc(p.trajanje) + '</li>' : '') +
@@ -260,6 +269,7 @@
           (p.trajanje ? '<li><svg aria-hidden="true"><use href="#i-moon"/></svg>' + esc(p.trajanje) + '</li>' : '') +
         '</ul>' +
         '<p class="dialog-text">' + esc(p.detalji || p.opis) + '</p>' +
+        '<p class="dialog-page-link"><a href="/' + slug(p.destinacija) + '">Sve o putovanju, šta posetiti i transfer do hotela <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>' +
         (ukljuceno ? '<h3>Ponuda uključuje</h3><ul class="dialog-list">' + ukljuceno + '</ul>' : '') +
         (p.primer ? '<p class="dialog-note"><strong>Napomena:</strong> ovo je primer ponude za prikaz izgleda sajta, a ne aktivna ponuda. Pošalji upit i proverićemo trenutne mogućnosti za ovu destinaciju.</p>' : '') +
         '<div class="dialog-foot">' +

@@ -11,10 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Pripremi fajlove sajta
-        run: |
-          mkdir _site
-          cp -r *.html *.css *.js *.xml *.txt *.png *.svg _headers images _site/
+      - name: Napravi sajt (stranice destinacija i sitemap)
+        run: node build.js
 
       - name: Objavi na Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
