@@ -18,7 +18,8 @@ window.PODESAVANJA = {
   whatsappBroj: "381606705151",
 
   // Poruka koja se automatski upiše kada neko klikne na WhatsApp dugme
-  whatsappPoruka: "Zdravo! Pišem vam sa sajta Putuj jeftino. Zanima me ponuda za putovanje.",
+  // (\n je novi red; "Broj osoba: " je na kraju da posetilac odmah upiše broj)
+  whatsappPoruka: "Zdravo! Pišem vam sa sajta Putuj jeftino. Zanima me ponuda za putovanje.\n\nBroj osoba: ",
 
   // Link ka Instagram profilu
   instagram: "https://www.instagram.com/putujjeftino_rs/",

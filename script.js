@@ -251,7 +251,7 @@
     var ukljuceno = (p.ukljuceno || []).map(function (s) {
       return '<li><svg aria-hidden="true"><use href="#i-check"/></svg><span>' + esc(s) + '</span></li>';
     }).join('');
-    var waPoruka = 'Zdravo! Zanima me ponuda: ' + p.destinacija + ' (' + p.datum + '). Možete li mi poslati više informacija?';
+    var waPoruka = 'Zdravo! Zanima me ponuda: ' + p.destinacija + ' (' + p.datum + '). Možete li mi poslati više informacija?\n\nBroj osoba: ';
 
     $('#dialog-sadrzaj').innerHTML = '' +
       '<div class="dialog-media">' +

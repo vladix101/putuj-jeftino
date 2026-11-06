@@ -169,8 +169,8 @@ function stranica(d, sveDest) {
     : 'Jeftina putovanja ' + (d.u || 'za ' + d.naziv) + ' iz Beograda: let i smeštaj po povoljnoj ceni, uz PDF vodič šta posetiti i uputstvo za transfer do hotela.';
 
   var waPoruka = imaPonudu
-    ? 'Zdravo! Zanima me ponuda: ' + d.naziv + ' (' + prva.datum + '). Možete li mi poslati više informacija?'
-    : 'Zdravo! Zanima me putovanje: ' + d.naziv + '. Imate li neku ponudu?';
+    ? 'Zdravo! Zanima me ponuda: ' + d.naziv + ' (' + prva.datum + '). Možete li mi poslati više informacija?\n\nBroj osoba: '
+    : 'Zdravo! Zanima me putovanje: ' + d.naziv + '. Imate li neku ponudu?\n\nBroj osoba: ';
 
   /* --- Kutija sa ponudom --- */
   var kutije = imaPonudu ? d.ponude.map(function (p) {
