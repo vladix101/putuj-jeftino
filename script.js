@@ -154,7 +154,7 @@
           '<div class="offer-foot">' +
             '<div class="offer-price"><span>već od</span><strong>' + esc(formatCena(p.cena)) + '</strong><small>po osobi</small></div>' +
             '<div class="offer-actions">' +
-              '<button class="btn btn-ghost btn-sm" type="button" data-detalji="' + esc(p.id) + '" aria-label="Saznaj više o ponudi ' + esc(p.destinacija) + '">Saznaj više</button>' +
+              '<a class="btn btn-ghost btn-sm" href="/' + slug(p.destinacija) + '" aria-label="Saznaj više o ponudi ' + esc(p.destinacija) + '">Saznaj više</a>' +
               '<button class="btn btn-primary btn-sm" type="button" data-upit="' + esc(p.id) + '" aria-label="Pošalji upit za ' + esc(p.destinacija) + '">Pošalji upit</button>' +
             '</div>' +
           '</div>' +
@@ -196,11 +196,11 @@
     if (!izdvojene.length) izdvojene = PONUDE;
     izdvojene = izdvojene.slice(0, 3);
     lista.innerHTML = izdvojene.map(function (p, i) {
-      return '<li><button class="hero-deal" type="button" data-detalji="' + esc(p.id) + '" style="--i:' + i + '" aria-label="' + esc(p.destinacija + (p.dorucak ? ' (sa doručkom)' : '') + ', ' + p.datum + ', od ' + formatCena(p.cena)) + '">' +
+      return '<li><a class="hero-deal" href="/' + slug(p.destinacija) + '" style="--i:' + i + '" aria-label="' + esc(p.destinacija + (p.dorucak ? ' (sa doručkom)' : '') + ', ' + p.datum + ', od ' + formatCena(p.cena)) + '">' +
         '<img src="' + esc(p.slika) + '" alt="" width="76" height="76" decoding="async">' +
         '<span class="hero-deal-info"><strong>' + esc(p.destinacija) + (p.dorucak ? '<em class="hero-deal-dorucak"><svg aria-hidden="true"><use href="#i-cup"/></svg>+ doručak</em>' : '') + '</strong><small>' + esc(p.datum) + (p.trajanje ? ' · ' + esc(p.trajanje) : '') + '</small></span>' +
         '<span class="hero-deal-price"><small>od</small><b>' + esc(formatCena(p.cena)) + '</b></span>' +
-      '</button></li>';
+      '</a></li>';
     }).join('');
     var tag = $('#hero-panel-tag');
     if (tag) tag.hidden = !izdvojene.some(function (p) { return p.primer; });
