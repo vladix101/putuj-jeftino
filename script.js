@@ -128,7 +128,7 @@
     return '' +
       '<article class="offer-card reveal" data-kategorija="' + esc(p.kategorija) + '">' +
         '<div class="offer-media">' +
-          '<img src="' + esc(p.slika) + '" alt="' + esc(p.destinacija + ', ' + p.drzava + ' — ponuda za putovanje') + '" width="900" height="600" loading="lazy" decoding="async">' +
+          '<img src="' + esc(p.slika) + '" alt="' + esc(p.destinacija + ', ' + p.drzava + ' — jeftino putovanje') + '" width="900" height="600" loading="lazy" decoding="async">' +
           (p.primer ? '<span class="offer-badge">Primer ponude</span>' : '') +
           (p.dorucak ? '<span class="offer-badge offer-badge--dorucak"><svg aria-hidden="true"><use href="#i-cup"/></svg>Doručak uključen</span>' : '') +
           (kat ? '<span class="offer-cat">' + esc(kat) + '</span>' : '') +
@@ -246,7 +246,7 @@
 
     $('#dialog-sadrzaj').innerHTML = '' +
       '<div class="dialog-media">' +
-        '<img src="' + esc(p.slika) + '" alt="' + esc(p.destinacija + ', ' + p.drzava + ' — ponuda za putovanje') + '" width="900" height="600">' +
+        '<img src="' + esc(p.slika) + '" alt="' + esc(p.destinacija + ', ' + p.drzava + ' — jeftino putovanje') + '" width="900" height="600">' +
         (p.primer ? '<span class="offer-badge">Primer ponude</span>' : '') +
         (p.dorucak ? '<span class="offer-badge offer-badge--dorucak"><svg aria-hidden="true"><use href="#i-cup"/></svg>Doručak uključen</span>' : '') +
         (kat ? '<span class="offer-cat">' + esc(kat) + '</span>' : '') +

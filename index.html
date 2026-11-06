@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Putuj jeftino | Povoljna putovanja iz Srbije i city break ponude</title>
-  <meta name="description" content="Povoljna putovanja za putnike iz Srbije: city break i odmor na moru sa uključenom avio kartom i smeštajem. Pogledaj ponude i pošalji upit preko WhatsApp-a.">
-  <meta name="keywords" content="povoljna putovanja, jeftina putovanja, ponude za putovanja, city break, letovanje, putovanja iz Srbije, Putuj jeftino">
+  <title>Jeftina putovanja iz Srbije | Putuj jeftino</title>
+  <meta name="description" content="Jeftina putovanja iz Srbije na jednom mestu: city break i odmor na moru sa avio kartom i smeštajem. Pogledaj ponude i pošalji upit preko WhatsApp-a.">
+  <meta name="keywords" content="jeftina putovanja, jeftina putovanja iz Srbije, povoljna putovanja, ponude za putovanja, city break, letovanje, putovanja iz Srbije, Putuj jeftino">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#0A1F3C">
   <meta name="format-detection" content="telephone=no">
@@ -15,8 +15,8 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="sr_RS">
   <meta property="og:site_name" content="Putuj jeftino">
-  <meta property="og:title" content="Putuj jeftino | Svet je bliže nego što misliš">
-  <meta property="og:description" content="Otkrij povoljne ponude za putovanja i pronađi svoju sledeću destinaciju po odličnoj ceni.">
+  <meta property="og:title" content="Jeftina putovanja iz Srbije | Putuj jeftino">
+  <meta property="og:description" content="Svet je bliže nego što misliš. Jeftina putovanja sa avio kartom i smeštajem, za putnike iz Srbije.">
   <meta property="og:url" content="https://putujjeftino.rs/">
   <meta property="og:image" content="https://putujjeftino.rs/images/og-putuj-jeftino.jpg">
   <meta property="og:image:width" content="1200">
@@ -24,8 +24,8 @@
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:alt" content="Putuj jeftino — povoljna putovanja iz Srbije. Svet je bliže nego što misliš.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Putuj jeftino | Svet je bliže nego što misliš">
-  <meta name="twitter:description" content="Otkrij povoljne ponude za putovanja i pronađi svoju sledeću destinaciju po odličnoj ceni.">
+  <meta name="twitter:title" content="Jeftina putovanja iz Srbije | Putuj jeftino">
+  <meta name="twitter:description" content="Svet je bliže nego što misliš. Jeftina putovanja sa avio kartom i smeštajem, za putnike iz Srbije.">
   <meta name="twitter:image" content="https://putujjeftino.rs/images/og-putuj-jeftino.jpg">
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -45,13 +45,28 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Putuj jeftino",
-    "url": "https://putujjeftino.rs/",
-    "logo": "https://putujjeftino.rs/apple-touch-icon.png",
-    "description": "Povoljne ponude za putovanja na jednom mestu.",
-    "telephone": "+381606705151",
-    "sameAs": ["https://www.instagram.com/putujjeftino_rs/"]
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://putujjeftino.rs/#organizacija",
+        "name": "Putuj jeftino",
+        "url": "https://putujjeftino.rs/",
+        "logo": "https://putujjeftino.rs/apple-touch-icon.png",
+        "description": "Jeftina putovanja iz Srbije: tražimo najpovoljnije ponude za let i smeštaj i rezervišemo ih umesto tebe.",
+        "telephone": "+381606705151",
+        "areaServed": { "@type": "Country", "name": "Srbija" },
+        "sameAs": ["https://www.instagram.com/putujjeftino_rs/"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://putujjeftino.rs/#sajt",
+        "name": "Putuj jeftino",
+        "alternateName": "Jeftina putovanja iz Srbije",
+        "url": "https://putujjeftino.rs/",
+        "inLanguage": "sr-Latn",
+        "publisher": { "@id": "https://putujjeftino.rs/#organizacija" }
+      }
+    ]
   }
   </script>
 </head>
@@ -148,9 +163,9 @@
 
       <div class="container hero-content">
         <div class="hero-text">
-          <p class="eyebrow eyebrow-light"><span class="dot" aria-hidden="true"></span> <span class="eyebrow-handle">@putujjeftino_rs ·</span> povoljna putovanja</p>
-          <h1 id="hero-naslov">Svet je <em>bliže</em> nego što misliš.</h1>
-          <p class="hero-sub">Otkrij povoljne ponude za putovanja i pronađi svoju sledeću destinaciju po odličnoj ceni.</p>
+          <div class="eyebrow eyebrow-light"><span class="dot" aria-hidden="true"></span> <span class="eyebrow-handle">@putujjeftino_rs ·</span> <h1 class="eyebrow-h1">jeftina putovanja iz Srbije</h1></div>
+          <p class="hero-title" id="hero-naslov">Svet je <em>bliže</em> nego što misliš.</p>
+          <p class="hero-sub">Otkrij jeftina putovanja i pronađi svoju sledeću destinaciju po odličnoj ceni.</p>
           <div class="hero-actions">
             <a class="btn btn-primary btn-lg" href="#ponude">Pogledaj ponude <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
             <a class="btn btn-outline-light btn-lg" href="#kontakt">Kontaktiraj nas</a>
@@ -174,7 +189,7 @@
     <!-- ============ KAKO FUNKCIONIŠE ============ -->
     <section class="steps-section" id="kako" aria-labelledby="kako-naslov">
       <div class="container">
-        <h2 class="visually-hidden" id="kako-naslov">Kako do putovanja</h2>
+        <h2 class="visually-hidden" id="kako-naslov">Kako do jeftinog putovanja</h2>
         <ol class="steps">
           <li class="step reveal">
             <span class="step-num">01</span>
@@ -201,7 +216,7 @@
         <div class="section-head reveal">
           <p class="hand-note">izdvojili smo za tebe</p>
           <h2 id="ponude-naslov">Kuda ovaj put?</h2>
-          <p class="section-lead">Klikni na ponudu za detalje ili odmah pošalji upit.</p>
+          <p class="section-lead">Jeftina putovanja sa letom i smeštajem. Klikni na ponudu za detalje ili odmah pošalji upit.</p>
         </div>
 
         <div class="demo-notice reveal" id="demo-obavestenje" role="note">
@@ -239,7 +254,7 @@
           <p class="hand-note">malo o nama</p>
           <h2 id="o-nama-naslov">Putovanja ne moraju da budu luksuz.</h2>
           <p class="lead">Ideja je jednostavna: novi grad, more ili daleka destinacija često su dostupniji nego što izgleda — samo treba znati gde i kada tražiti.</p>
-          <p>Zato skupljamo povoljne ponude i zanimljive termine i delimo ih na jednom mestu, bez sitnih slova i komplikovanih objašnjenja. Ako ti nešto zapne za oko ili imaš svoju ideju za putovanje, piši nam — rado ćemo pomoći da nađeš nešto što odgovara tvom budžetu.</p>
+          <p>Zato tražimo jeftina putovanja, povoljne ponude i zanimljive termine i delimo ih na jednom mestu, bez sitnih slova i komplikovanih objašnjenja. Ako ti nešto zapne za oko ili imaš svoju ideju za putovanje, piši nam — rado ćemo pomoći da nađeš nešto što odgovara tvom budžetu.</p>
 
           <p class="signature">Vidimo se na putu!<span>— Putuj jeftino</span></p>
         </div>
@@ -348,7 +363,7 @@
           <span class="logo-mark" aria-hidden="true"><svg><use href="#i-plane"/></svg></span>
           <span class="logo-text">Putuj <em>jeftino</em></span>
         </a>
-        <p>Povoljne ponude za putovanja na jednom mestu.</p>
+        <p>Jeftina putovanja i povoljne ponude na jednom mestu.</p>
         <a class="btn btn-outline-light btn-sm footer-ig" href="https://www.instagram.com/putujjeftino_rs/" target="_blank" rel="noopener" data-instagram-link>
           <svg aria-hidden="true"><use href="#i-instagram"/></svg> Instagram
         </a>

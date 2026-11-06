@@ -66,11 +66,11 @@ svg { width: 1.2em; height: 1.2em; flex-shrink: 0; }
 a { color: var(--teal-700); text-underline-offset: 3px; }
 a:hover { color: var(--teal-600); }
 
-h1, h2, h3 { color: var(--ink); margin: 0; line-height: 1.12; }
-h1, h2 { font-family: var(--font-display); font-weight: 400; letter-spacing: -.01em; }
-h1 em, h2 em { font-style: italic; color: var(--teal-600); font-weight: 400; }
+h1, h2, h3, .hero-title { color: var(--ink); margin: 0; line-height: 1.12; }
+h1, h2, .hero-title { font-family: var(--font-display); font-weight: 400; letter-spacing: -.01em; }
+h1 em, h2 em, .hero-title em { font-style: italic; color: var(--teal-600); font-weight: 400; }
 /* DM Serif Display ima samo jednu debljinu — sprečava veštačko podebljavanje */
-h1, h2, .logo-text, .step-num, .offer-body h3, .offer-price strong, .form-card h3, .offers-more p { font-synthesis: none; }
+h1, h2, .hero-title, .logo-text, .step-num, .offer-body h3, .offer-price strong, .form-card h3, .offers-more p { font-synthesis: none; }
 h3 { font-size: 1.125rem; font-weight: 700; letter-spacing: -.01em; }
 p { margin: 0; }
 
@@ -190,6 +190,14 @@ section[id] { scroll-margin-top: calc(var(--header-h) - 1px); }
 .eyebrow-light { color: var(--teal-400); }
 .hero .eyebrow::before { display: none; }
 .hero .eyebrow { color: #fff; text-shadow: 0 1px 10px rgba(7, 23, 48, .55); }
+.eyebrow-h1 {
+  display: inline;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
 .eyebrow .dot {
   width: 8px; height: 8px;
   border-radius: 50%;
@@ -424,14 +432,14 @@ body.menu-open .header-ig:hover { background: var(--teal-50); color: var(--teal-
     linear-gradient(0deg, rgba(7, 23, 48, .92) 0%, rgba(7, 23, 48, .55) 42%, rgba(7, 23, 48, .1) 75%);
 }
 
-.hero h1 {
+.hero .hero-title {
   max-width: 16ch;
   color: #fff;
   font-size: clamp(2.9rem, 11vw, 5.75rem);
   line-height: 1.04;
   text-wrap: balance;
 }
-.hero h1 em { color: var(--teal-400); }
+.hero .hero-title em { color: var(--teal-400); }
 .hero-sub {
   max-width: 34rem;
   margin-top: 1.25rem;
@@ -462,7 +470,7 @@ body.menu-open .header-ig:hover { background: var(--teal-50); color: var(--teal-
     align-items: end;
     gap: 4rem;
   }
-  .hero h1 { font-size: clamp(4.75rem, 5.7vw, 7rem); }
+  .hero .hero-title { font-size: clamp(4.75rem, 5.7vw, 7rem); }
   .hero-sub { font-size: 1.3rem; max-width: 38rem; }
 
   .hero-panel:not([hidden]) {
@@ -1276,8 +1284,8 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 }
 
 /* ---------- Naslov: reči ulaze jedna za drugom ---------- */
-.hero-text > h1 { animation: none; }
-.js .hero h1 .w {
+.hero-text > .hero-title { animation: none; }
+.js .hero .hero-title .w {
   display: inline-block;
   opacity: 0;
   transform: translateY(.55em) rotate(3deg);
@@ -1287,8 +1295,8 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 }
 @keyframes wordIn { to { opacity: 1; transform: none; filter: blur(0); } }
 
-.hero h1 em { position: relative; display: inline-block; padding-right: .06em; }
-.hero h1 em::after {
+.hero .hero-title em { position: relative; display: inline-block; padding-right: .06em; }
+.hero .hero-title em::after {
   content: "";
   position: absolute;
   left: 0; right: 0;
