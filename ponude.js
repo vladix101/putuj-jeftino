@@ -66,6 +66,7 @@ window.PONUDE = [
     prevoz: "autobus",
     prevoznik: "FlixBus",
     novo: true,
+    izdvojeno: true,
     primer: false
   },
   {
@@ -83,6 +84,7 @@ window.PONUDE = [
     avioKompanija: "Air Serbia",
     dorucak: true,
     novo: true,
+    izdvojeno: true,
     primer: false
   },
   {
@@ -99,6 +101,7 @@ window.PONUDE = [
     ukljuceno: ["Povratna avio karta Air Serbia", "Smeštaj 3 noćenja"],
     avioKompanija: "Air Serbia",
     novo: true,
+    izdvojeno: true,
     primer: false
   },
   {
@@ -116,7 +119,6 @@ window.PONUDE = [
     avioKompanija: "Air Serbia",
     dorucak: true,
     novo: true,
-    izdvojeno: true,
     primer: false
   },
   {
@@ -133,7 +135,6 @@ window.PONUDE = [
     ukljuceno: ["Povratna avio karta", "Smeštaj u hotelu, 3 noćenja", "Doručak"],
     dorucak: true,
     novo: true,
-    izdvojeno: true,
     primer: false
   },
   {
@@ -151,7 +152,6 @@ window.PONUDE = [
     avioKompanija: "Air Serbia",
     dorucak: true,
     novo: true,
-    izdvojeno: true,
     primer: false
   },
   {
