@@ -86,6 +86,24 @@ window.PONUDE = [
     primer: false
   },
   {
+    id: "ljubljana-nova-godina",
+    destinacija: "Ljubljana",
+    drzava: "Slovenija",
+    kategorija: "novagodina",
+    slika: "images/ljubljana.jpg",
+    datum: "30. dec 2026 – 1. jan 2027.",
+    trajanje: "2 noćenja",
+    cena: 290,
+    opis: "Doček Nove godine u Ljubljani — praznično osvetljen stari grad uz reku, autobusom FlixBus i sa doručkom.",
+    detalji: "Dva noćenja u Ljubljani za doček Nove godine. U cenu su uključeni povratni prevoz autobusom FlixBus iz Beograda, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o prevozu i smeštaju.",
+    ukljuceno: ["Povratna autobuska karta FlixBus", "Smeštaj 2 noćenja", "Doručak"],
+    prevoz: "autobus",
+    prevoznik: "FlixBus",
+    dorucak: true,
+    novo: true,
+    primer: false
+  },
+  {
     id: "stokholm-januar",
     destinacija: "Stokholm",
     drzava: "Švedska",

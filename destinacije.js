@@ -428,5 +428,35 @@ window.DESTINACIJE = {
       "Valuta je rumunski lej, a kartice se prihvataju skoro svuda.",
       "Metro je brz i jednostavan način za kretanje po gradu."
     ]
+  },
+
+  ljubljana: {
+    naziv: "Ljubljana",
+    drzava: "Slovenija",
+    slika: "images/ljubljana.jpg",
+    u: "u Ljubljanu",
+    lokativ: "u Ljubljani",
+    uvod: [
+      "Ljubljana je mala, zelena i šarmantna prestonica Slovenije, sa starim gradom uz reku Ljubljanicu, mostovima i zamkom na brdu iznad centra. Centar je zatvoren za automobile, pa se sve obilazi peške, uz kafiće i restorane na obali reke.",
+      "U decembru je grad praznično osvetljen i pun prazničnih štandova, pa je Ljubljana odličan izbor za jeftina putovanja za doček Nove godine — autobusom iz Beograda, bez aerodroma."
+    ],
+    znamenitosti: [
+      { naziv: "Prešernov trg i Tromostovlje", opis: "Glavni trg u centru, sa ružičastom Franjevačkom crkvom i čuvenim trostrukim mostom preko Ljubljanice." },
+      { naziv: "Ljubljanski grad", opis: "Zamak na brdu iznad starog grada, do kog se stiže uspinjačom ili peške. Sa vidikovca se pruža pogled na ceo grad." },
+      { naziv: "Šetalište uz Ljubljanicu", opis: "Obale reke pune kafića i restorana — najlepše veče u gradu, posebno sa prazničnom rasvetom." },
+      { naziv: "Zmajski most", opis: "Most sa zmajevima, simbolom Ljubljane, na kraju starog grada." },
+      { naziv: "Centralna pijaca", opis: "Pijaca uz reku sa kolonadama koje je projektovao arhitekta Jože Plečnik, odmah pored katedrale." },
+      { naziv: "Park Tivoli", opis: "Najveći gradski park, nadomak centra, idealan za mirnu šetnju." }
+    ],
+    transferNaslov: "Kako do hotela sa autobuske stanice",
+    transfer: [
+      "Putuje se autobusom FlixBus iz Beograda. Vožnja traje više sati, a na granici računaj na moguće čekanje, posebno u vreme praznika. Glavna autobuska stanica u Ljubljani je pored železničke stanice, na kratkoj šetnji od centra.",
+      "U PDF vodiču dobijaš uputstvo kako da od autobuske stanice stigneš do hotela i kako da se vratiš na stanicu na dan polaska."
+    ],
+    saveti: [
+      "Ponesi pasoš — potreban je za prelazak granice.",
+      "Valuta je evro, pa ne moraš da menjaš novac.",
+      "Stari grad je zatvoren za automobile i sve se obilazi peške — ponesi udobnu i toplu obuću."
+    ]
   }
 };
