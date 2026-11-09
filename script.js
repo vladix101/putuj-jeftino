@@ -62,6 +62,7 @@
   }
 
   function avioHtml(p) {
+    if (p.prevoz === 'autobus') return '<li class="meta-avio"><svg aria-hidden="true"><use href="#i-bus"/></svg>Autobus' + (p.prevoznik ? ' ' + esc(p.prevoznik) : '') + '</li>';
     return p.avioKompanija ? '<li class="meta-avio"><svg aria-hidden="true"><use href="#i-plane"/></svg>Let sa ' + esc(p.avioKompanija) + '</li>' : '';
   }
 

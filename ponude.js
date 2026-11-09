@@ -14,7 +14,7 @@
      id          – kratko ime bez razmaka i slova č/ć/š/ž/đ (npr. "rim-novembar")
      destinacija – naziv destinacije (npr. "Rim")
      drzava      – država (npr. "Italija")
-     kategorija  – "more" ili "grad" (koristi se za filtere)
+     kategorija  – "novagodina", "grad" ili "more" (koristi se za filtere)
      slika       – putanja do slike (npr. "images/rim.webp")
      datum       – datum putovanja kao tekst (npr. "29. nov – 2. dec 2026.")
      trajanje    – npr. "4 noćenja"
@@ -32,6 +32,9 @@
      novo        – true = na ponudi se prikazuje oznaka "Novo"
      avioKompanija – (nije obavezno) npr. "Air Serbia"; prikazuje se na
                    kartici i na stranici destinacije
+     prevoz      – (nije obavezno) "autobus" ako se ne putuje avionom;
+                   tada stranica govori o autobusu umesto o letu
+     prevoznik   – (uz prevoz: "autobus") npr. "FlixBus"
      izdvojeno   – true = ponuda se prikazuje u "Izdvojene ponude" na vrhu
                    naslovne strane (najviše 3; ako nijedna nije označena,
                    prikazuju se prve tri ponude)
@@ -42,11 +45,46 @@
    ===================================================================== */
 
 window.KATEGORIJE = {
+  novagodina: "Novogodišnje ponude",
   grad: "Gradska putovanja",
   more: "Mediteran"
 };
 
 window.PONUDE = [
+  {
+    id: "temisvar-nova-godina",
+    destinacija: "Temišvar",
+    drzava: "Rumunija",
+    kategorija: "novagodina",
+    slika: "images/temisvar.jpg",
+    datum: "30. dec 2026 – 2. jan 2027.",
+    trajanje: "3 noćenja",
+    cena: 150,
+    opis: "Doček Nove godine u Temišvaru — barokni trgovi i praznična atmosfera, autobusom FlixBus iz Beograda.",
+    detalji: "Tri noćenja u Temišvaru za doček Nove godine. U cenu su uključeni povratni prevoz autobusom FlixBus iz Beograda i smeštaj. Pošalji upit i javićemo ti sve detalje o prevozu i smeštaju.",
+    ukljuceno: ["Povratna autobuska karta FlixBus", "Smeštaj 3 noćenja"],
+    prevoz: "autobus",
+    prevoznik: "FlixBus",
+    novo: true,
+    primer: false
+  },
+  {
+    id: "bukurest-nova-godina",
+    destinacija: "Bukurešt",
+    drzava: "Rumunija",
+    kategorija: "novagodina",
+    slika: "images/bukurest.jpg",
+    datum: "30. dec 2026 – 2. jan 2027.",
+    trajanje: "3 noćenja",
+    cena: 310,
+    opis: "Doček Nove godine u Bukureštu — Palata parlamenta, stari grad i praznična atmosfera, let sa Air Serbia i doručak.",
+    detalji: "Tri noćenja u Bukureštu za doček Nove godine. U cenu su uključeni povratni let sa Air Serbia, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta Air Serbia", "Smeštaj 3 noćenja", "Doručak"],
+    avioKompanija: "Air Serbia",
+    dorucak: true,
+    novo: true,
+    primer: false
+  },
   {
     id: "stokholm-januar",
     destinacija: "Stokholm",

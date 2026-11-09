@@ -17,7 +17,7 @@
      lokativ     – "u Rimu", "na Malti" (gde se boravi)
      uvod        – lista pasusa na početku stranice
      znamenitosti – lista { naziv, opis } za odeljak "Šta posetiti"
-     transfer    – lista pasusa za odeljak o putu od aerodroma do hotela
+     transfer    – lista pasusa za odeljak o putu od aerodroma (ili stanice) do hotela
      saveti      – lista kratkih praktičnih saveta
    ===================================================================== */
 
@@ -368,6 +368,65 @@ window.DESTINACIJE = {
       "Ponesi udobnu obuću — staze na Akropolju su od glatkog kamena i mogu biti klizave.",
       "Valuta je evro, pa ne moraš da menjaš novac.",
       "Probaj suvlaki, đros i grčku salatu u nekoj od taverni u Plaki."
+    ]
+  },
+
+  temisvar: {
+    naziv: "Temišvar",
+    drzava: "Rumunija",
+    slika: "images/temisvar.jpg",
+    u: "u Temišvar",
+    lokativ: "u Temišvaru",
+    uvod: [
+      "Temišvar je jedan od najlepših gradova Rumunije, sa baroknim trgovima, parkovima i kanalom Begej koji teče kroz centar. Bio je Evropska prestonica kulture 2023. godine, a poznat je i kao prvi grad u Evropi sa električnom uličnom rasvetom.",
+      "Zbog blizine Beogradu, Temišvar je savršen za jeftina putovanja za Novu godinu: bez aerodroma i čekanja, autobusom stižeš za nekoliko sati, a centar grada je za praznike posebno lep."
+    ],
+    znamenitosti: [
+      { naziv: "Trg Pobede", opis: "Glavni gradski trg, sa zgradom Opere na jednom kraju i Pravoslavnom mitropolijskom katedralom na drugom. Za praznike je ukrašen svetlima." },
+      { naziv: "Pravoslavna mitropolijska katedrala", opis: "Velika katedrala sa šarenim krovovima od crepa, jedan od simbola grada." },
+      { naziv: "Trg Ujedinjenja", opis: "Najstariji trg u gradu, okružen baroknim zgradama, sa katoličkom katedralom i Srpskom pravoslavnom sabornom crkvom." },
+      { naziv: "Bastion Terezija", opis: "Ostatak stare tvrđave u centru grada, danas sa muzejom, kafićima i lokalima." },
+      { naziv: "Kanal Begej i park Ruža", opis: "Šetalište uz kanal i parkovi koji se nadovezuju jedan na drugi — lepo mesto za mirnu šetnju." },
+      { naziv: "Stari kvartovi", opis: "Kvartovi Fabrik i Josefin, sa starim zgradama i kafićima, za one koji žele da vide i manje turistički deo grada." }
+    ],
+    transferNaslov: "Kako do hotela sa autobuske stanice",
+    transfer: [
+      "Putuje se autobusom FlixBus iz Beograda. Autobus stiže u Temišvar posle nekoliko sati vožnje, a na granici računaj na moguće čekanje, posebno u vreme praznika.",
+      "U PDF vodiču dobijaš uputstvo kako da od autobuske stanice stigneš do hotela i kako da se vratiš na stanicu na dan polaska."
+    ],
+    saveti: [
+      "Ponesi pasoš — potreban je za prelazak granice.",
+      "Valuta je rumunski lej, a kartice se prihvataju skoro svuda.",
+      "Centar grada je mali i sve znamenitosti se lako obilaze peške."
+    ]
+  },
+
+  bukurest: {
+    naziv: "Bukurešt",
+    drzava: "Rumunija",
+    slika: "images/bukurest.jpg",
+    u: "u Bukurešt",
+    lokativ: "u Bukureštu",
+    uvod: [
+      "Bukurešt je rumunska prestonica velikih bulevara, elegantnih zgrada iz 19. veka i živog starog grada punog restorana i kafića. Zbog arhitekture su ga nekada zvali „mali Pariz“.",
+      "Za doček Nove godine Bukurešt je praznično ukrašen, a uz let sa Air Serbia iz Beograda i doručak, ovo je jedno od najudobnijih jeftinih putovanja za praznike."
+    ],
+    znamenitosti: [
+      { naziv: "Palata parlamenta", opis: "Jedna od najvećih administrativnih zgrada na svetu. Unutrašnjost se obilazi uz vodiča, a termin je najbolje rezervisati unapred." },
+      { naziv: "Stari grad", opis: "Uske ulice oko ulice Lipskani, pune restorana, kafića i barova — srce noćnog života." },
+      { naziv: "Rumunsko Atenej", opis: "Koncertna dvorana sa kupolom, jedna od najlepših zgrada u gradu i dom rumunske filharmonije." },
+      { naziv: "Bulevar Kalea Viktoriei", opis: "Najpoznatija ulica u gradu, sa palatama, muzejima i elegantnim zgradama." },
+      { naziv: "Muzej sela", opis: "Muzej na otvorenom u parku, sa starim kućama, crkvama i vetrenjačama iz cele Rumunije." },
+      { naziv: "Knjižara Karturešti Karusel", opis: "Knjižara u obnovljenoj zgradi iz 19. veka, sa belim spratovima — jedna od najlepših knjižara u Evropi." }
+    ],
+    transfer: [
+      "Glavni aerodrom Bukurešta nalazi se severno od grada. Do centra vozi ekspresni autobus, a postoji i voz do Severne železničke stanice. Taksi je takođe dostupan.",
+      "U PDF vodiču dobijaš uputstvo za tvoj hotel: koji prevoz da uzmeš, gde da siđeš i kako da se vratiš na aerodrom na dan polaska."
+    ],
+    saveti: [
+      "Ponesi pasoš — potreban je za putovanje u Rumuniju.",
+      "Valuta je rumunski lej, a kartice se prihvataju skoro svuda.",
+      "Metro je brz i jednostavan način za kretanje po gradu."
     ]
   }
 };

@@ -77,7 +77,7 @@ function malo(tekst) { return tekst.charAt(0).toLowerCase() + tekst.slice(1); }
 function spisakUkljuceno(lista) {
   var delovi = (lista || []).map(function (s) {
     var t = malo(s);
-    if (/avio karta/.test(t) && !/beograd/i.test(t)) t += ' iz Beograda';
+    if (/(avio|autobuska) karta/.test(t) && !/beograd/i.test(t)) t += ' iz Beograda';
     return t.replace(/^smeštaj (\d)/, 'smeštaj za $1');
   });
   if (delovi.length < 2) return delovi.join('');
@@ -165,6 +165,11 @@ function stranica(d, sveDest) {
   var imaDorucak = d.ponude.some(function (p) { return p.dorucak; });
   var jeNovo = d.ponude.some(function (p) { return p.novo; });
   var avio = imaPonudu ? (prva.avioKompanija || '') : '';
+  // Prevoz: avion (podrazumevano) ili autobus (prevoz: "autobus" u ponude.js)
+  var autobus = imaPonudu && prva.prevoz === 'autobus';
+  var prevoznik = autobus ? (prva.prevoznik || '') : avio;
+  var prevozRec = autobus ? 'prevoz' : 'let';
+  var odStanice = autobus ? 'od autobuske stanice' : 'od aerodroma';
 
   var h1 = d.u
     ? 'Jeftina putovanja <em>' + esc(d.u) + '</em> iz Beograda'
@@ -175,7 +180,7 @@ function stranica(d, sveDest) {
     (imaPonudu ? ' – od ' + formatCena(d.najniza) : '') + ' | Putuj jeftino';
 
   var opis = imaPonudu
-    ? 'Jeftino putovanje ' + (d.u || 'za ' + d.naziv) + ': povratni let ' + (avio ? avio + ' ' : '') + 'iz Beograda i smeštaj za ' + prva.trajanje +
+    ? 'Jeftino putovanje ' + (d.u || 'za ' + d.naziv) + ': ' + (autobus ? 'povratni prevoz autobusom ' + (prevoznik ? prevoznik + ' ' : '') : 'povratni let ' + (avio ? avio + ' ' : '')) + 'iz Beograda i smeštaj za ' + prva.trajanje +
       (imaDorucak ? ' sa doručkom' : '') + ', od ' + formatCena(d.najniza) + ' po osobi' + (d.popust ? ' (sniženo sa ' + formatCena(d.staraCena) + ')' : '') + ' za dve ili više osoba. Uz ponudu dobijaš PDF vodič i uputstvo za transfer.'
     : 'Jeftina putovanja ' + (d.u || 'za ' + d.naziv) + ' iz Beograda: let i smeštaj po povoljnoj ceni, uz PDF vodič šta posetiti i uputstvo za transfer do hotela.';
 
@@ -186,7 +191,7 @@ function stranica(d, sveDest) {
   /* --- Kutija sa ponudom --- */
   var kutije = imaPonudu ? d.ponude.map(function (p) {
     var stavke = (p.ukljuceno || []).map(function (s) {
-      if (/avio karta/i.test(s) && !/beograd/i.test(s)) s += ' iz Beograda';
+      if (/(avio|autobuska) karta/i.test(s) && !/beograd/i.test(s)) s += ' iz Beograda';
       return '<li><svg aria-hidden="true"><use href="#i-check"/></svg><span>' + esc(s) + '</span></li>';
     }).join('');
     stavke += '<li><svg aria-hidden="true"><use href="#i-check"/></svg><span>PDF vodič: šta posetiti i transfer do hotela</span></li>';
@@ -226,18 +231,20 @@ function stranica(d, sveDest) {
 
   var prednosti = '' +
     '<ul class="dest-features">' +
-      '<li><h3><svg aria-hidden="true"><use href="#i-plane"/></svg>Let iz Beograda</h3><p>Polazak je sa beogradskog aerodroma „Nikola Tesla“' + (avio ? ', let je sa ' + esc(avio) : '') + ', a povratna avio karta je uključena u cenu.</p></li>' +
+      (autobus
+        ? '<li><h3><svg aria-hidden="true"><use href="#i-bus"/></svg>Autobusom iz Beograda</h3><p>Polazak je iz Beograda autobusom' + (prevoznik ? ' ' + esc(prevoznik) : '') + ', a povratna karta je uključena u cenu.</p></li>'
+        : '<li><h3><svg aria-hidden="true"><use href="#i-plane"/></svg>Let iz Beograda</h3><p>Polazak je sa beogradskog aerodroma „Nikola Tesla“' + (avio ? ', let je sa ' + esc(avio) : '') + ', a povratna avio karta je uključena u cenu.</p></li>') +
       '<li><h3><svg aria-hidden="true"><use href="#i-moon"/></svg>Smeštaj' + (imaPonudu && prva.trajanje ? ' ' + esc(prva.trajanje) : '') + '</h3><p>Smeštaj za ceo boravak ' + esc(lok) + ' je uključen u cenu' + (imaDorucak ? ', zajedno sa doručkom' : '') + '.</p></li>' +
       '<li><h3><svg aria-hidden="true"><use href="#i-info"/></svg>PDF vodič</h3><p>Dobijaš PDF fajl sa preporukama šta da posetiš, gde da prošetaš i šta da probaš ' + esc(lok) + '.</p></li>' +
-      '<li><h3><svg aria-hidden="true"><use href="#i-arrow"/></svg>Uputstvo za transfer</h3><p>U istom PDF-u je i uputstvo kako da stigneš od aerodroma do hotela i nazad, korak po korak.</p></li>' +
+      '<li><h3><svg aria-hidden="true"><use href="#i-arrow"/></svg>Uputstvo za transfer</h3><p>U istom PDF-u je i uputstvo kako da stigneš ' + odStanice + ' do hotela i nazad, korak po korak.</p></li>' +
     '</ul>';
 
   var cenaTekst = imaPonudu
     ? '<p>Cena ovog putovanja je od <strong>' + esc(formatCena(d.najniza)) + ' po osobi</strong>' + (d.popust ? ' — sniženo sa ' + esc(formatCena(d.staraCena)) : '') + '. U cenu je uključeno: ' + esc(spisakUkljuceno(prva.ukljuceno)) + '.' +
-        (d.ponude.length > 1 ? ' Termini i cene svih ponuda su navedeni u pregledu ponude.' : ' Termin putovanja je ' + esc(prva.datum) + '.') + '</p>' +
+        (d.ponude.length > 1 ? ' Termini i cene svih ponuda su navedeni u pregledu ponude.' : ' Termin putovanja je ' + esc(prva.datum.replace(/\.$/, '')) + '.') + '</p>' +
       '<p><strong>Ova cena važi kada putuju dve ili više osoba</strong> — na primer par, prijatelji ili porodica. Ako putuješ sam ili sama, javi nam se i proverićemo cenu za jednu osobu.</p>' +
-      '<p>Cene letova i smeštaja se menjaju, pa se konačna cena i uslovi uvek potvrđuju pri upitu, pre rezervacije.</p>'
-    : '<p>Trenutno nemamo aktivnu ponudu za ovu destinaciju, ali se cene letova i smeštaja stalno menjaju. Pošalji nam upit sa okvirnim terminom i proverićemo šta trenutno može da se nađe. Cene koje objavljujemo važe kada putuju dve ili više osoba.</p>';
+      '<p>Cene prevoza i smeštaja se menjaju, pa se konačna cena i uslovi uvek potvrđuju pri upitu, pre rezervacije.</p>'
+    : '<p>Trenutno nemamo aktivnu ponudu za ovu destinaciju, ali se cene prevoza i smeštaja stalno menjaju. Pošalji nam upit sa okvirnim terminom i proverićemo šta trenutno može da se nađe. Cene koje objavljujemo važe kada putuju dve ili više osoba.</p>';
 
   var znamenitosti = (t.znamenitosti && t.znamenitosti.length) ? '' +
     '<section aria-labelledby="sta-posetiti">' +
@@ -250,7 +257,7 @@ function stranica(d, sveDest) {
 
   var transfer = (t.transfer && t.transfer.length) ? '' +
     '<section aria-labelledby="transfer">' +
-      '<h2 id="transfer">Kako do hotela sa aerodroma</h2>' +
+      '<h2 id="transfer">' + esc(t.transferNaslov || (autobus ? 'Kako do hotela sa autobuske stanice' : 'Kako do hotela sa aerodroma')) + '</h2>' +
       t.transfer.map(function (pas) { return '<p>' + esc(pas) + '</p>'; }).join('') +
     '</section>' : '';
 
@@ -263,12 +270,14 @@ function stranica(d, sveDest) {
     '</section>' : '';
 
   var pitanja = [
-    ['Da li je let iz Beograda?', 'Da. Let polazi sa beogradskog aerodroma „Nikola Tesla“' + (avio ? ' i leti se sa ' + avio : '') + ', a povratna avio karta je uključena u cenu.'],
+    autobus
+      ? ['Da li se putuje iz Beograda?', 'Da. Putuje se autobusom' + (prevoznik ? ' ' + prevoznik : '') + ' iz Beograda, a povratna karta je uključena u cenu.']
+      : ['Da li je let iz Beograda?', 'Da. Let polazi sa beogradskog aerodroma „Nikola Tesla“' + (avio ? ' i leti se sa ' + avio : '') + ', a povratna avio karta je uključena u cenu.'],
     ['Da li cena važi i ako putujem sam ili sama?', 'Objavljena cena važi kada putuju dve ili više osoba. Ako putuješ sam ili sama, pošalji nam upit i javićemo ti tačnu cenu za jednu osobu.'],
-    ['Šta dobijam u PDF vodiču?', 'Uz ponudu dobijaš PDF fajl sa preporukama šta da posetiš ' + lok + ' i uputstvom kako da stigneš od aerodroma do hotela i nazad.'],
-    ['Da li je prtljag uključen?', 'Uslovi za prtljag zavise od avio-kompanije i karte. Pre rezervacije ti tačno kažemo šta je uključeno, a šta može da se doplati.'],
-    ['Da li ste turistička agencija?', 'Ne. Putuj jeftino nije turistička agencija — mi tražimo najpovoljnije ponude za let i smeštaj i rezervišemo ih umesto tebe.'],
-    ['Kako da rezervišem?', 'Pošalji nam upit preko WhatsApp-a, Instagrama ili kontakt forme. Javljamo ti tačnu cenu i detalje, a kada potvrdiš, rezervišemo let i smeštaj umesto tebe.']
+    ['Šta dobijam u PDF vodiču?', 'Uz ponudu dobijaš PDF fajl sa preporukama šta da posetiš ' + lok + ' i uputstvom kako da stigneš ' + odStanice + ' do hotela i nazad.'],
+    ['Da li je prtljag uključen?', 'Uslovi za prtljag zavise od prevoznika i karte. Pre rezervacije ti tačno kažemo šta je uključeno, a šta može da se doplati.'],
+    ['Da li ste turistička agencija?', 'Ne. Putuj jeftino nije turistička agencija — mi tražimo najpovoljnije ponude za ' + prevozRec + ' i smeštaj i rezervišemo ih umesto tebe.'],
+    ['Kako da rezervišem?', 'Pošalji nam upit preko WhatsApp-a, Instagrama ili kontakt forme. Javljamo ti tačnu cenu i detalje, a kada potvrdiš, rezervišemo ' + prevozRec + ' i smeštaj umesto tebe.']
   ];
 
   var faq = '' +
@@ -340,7 +349,9 @@ function stranica(d, sveDest) {
     (jeNovo ? '<li class="dest-chip-new">Novo</li>' : '') +
     (imaPonudu ? '<li><svg aria-hidden="true"><use href="#i-calendar"/></svg>' + esc(prva.datum) + '</li>' : '') +
     (imaPonudu && prva.trajanje ? '<li><svg aria-hidden="true"><use href="#i-moon"/></svg>' + esc(prva.trajanje) + '</li>' : '') +
-    '<li><svg aria-hidden="true"><use href="#i-plane"/></svg>Let iz Beograda' + (avio ? ' · ' + esc(avio) : '') + '</li>' +
+    (autobus
+      ? '<li><svg aria-hidden="true"><use href="#i-bus"/></svg>Autobus iz Beograda' + (prevoznik ? ' · ' + esc(prevoznik) : '') + '</li>'
+      : '<li><svg aria-hidden="true"><use href="#i-plane"/></svg>Let iz Beograda' + (avio ? ' · ' + esc(avio) : '') + '</li>') +
     (imaDorucak ? '<li><svg aria-hidden="true"><use href="#i-cup"/></svg>Doručak uključen</li>' : '') +
     (d.popust ? '<li class="dest-chip-sale">Sniženo −' + esc(formatCena(d.popust)) + '</li>' : '') +
     (imaPonudu ? '<li class="dest-chip-price">' + (d.popust ? '<s>' + esc(formatCena(d.staraCena)) + '</s> ' : '') + 'od ' + esc(formatCena(d.najniza)) + ' po osobi</li>' : '');
@@ -404,10 +415,10 @@ function stranica(d, sveDest) {
 '        <section aria-labelledby="rezervacija"><h2 id="rezervacija">Kako da rezervišeš</h2>' +
           '<ol class="dest-steps">' +
             '<li><h3>Pošalji upit</h3><p>Javi nam se preko WhatsApp-a, Instagrama ili kontakt forme i reci koliko vas putuje.</p></li>' +
-            '<li><h3>Dobiješ sve detalje</h3><p>Javljamo ti tačnu cenu, detalje leta i smeštaja, pa ti odlučuješ — bez ikakve obaveze.</p></li>' +
-            '<li><h3>Mi rezervišemo umesto tebe</h3><p>Kada potvrdiš, rezervišemo let i smeštaj, a ti dobijaš i PDF vodič za putovanje.</p></li>' +
+            '<li><h3>Dobiješ sve detalje</h3><p>Javljamo ti tačnu cenu, detalje ' + (autobus ? 'prevoza' : 'leta') + ' i smeštaja, pa ti odlučuješ — bez ikakve obaveze.</p></li>' +
+            '<li><h3>Mi rezervišemo umesto tebe</h3><p>Kada potvrdiš, rezervišemo ' + prevozRec + ' i smeštaj, a ti dobijaš i PDF vodič za putovanje.</p></li>' +
           '</ol>' +
-          '<p class="dest-agency">Putuj jeftino nije turistička agencija. Mi tražimo najpovoljnije ponude za let i smeštaj i rezervišemo ih umesto tebe.</p>' +
+          '<p class="dest-agency">Putuj jeftino nije turistička agencija. Mi tražimo najpovoljnije ponude za ' + prevozRec + ' i smeštaj i rezervišemo ih umesto tebe.</p>' +
         '</section>\n' +
 '        ' + faq + '\n' +
 '      </article>\n' +
