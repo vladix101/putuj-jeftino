@@ -267,7 +267,7 @@ function stranica(d, sveDest) {
   var terminiHtml = termini.length ? '' +
     '<section aria-labelledby="termini">' +
       '<h2 id="termini">Termini za ' + esc(d.naziv) + ' u narednih 45 dana</h2>' +
-      '<p>Pored termina iz ponude, ovo su datumi sa najpovoljnijim letovima iz Beograda za ' + (noci ? noci + ' noćenja' : 'ovo putovanje') + '. Klikni na termin koji ti odgovara i javićemo ti tačnu cenu za let i smeštaj.</p>' +
+      '<p>Pored termina iz ponude, ovo su datumi sa najpovoljnijim direktnim letovima iz Beograda za ' + (noci ? noci + ' noćenja' : 'ovo putovanje') + '. Klikni na termin koji ti odgovara i javićemo ti tačnu cenu za let i smeštaj.</p>' +
       '<ul class="dest-termini">' + termini.map(function (x) {
         var tekst = opsegDatuma(x.polazak, x.povratak);
         var poruka = 'Zdravo! Zanima me putovanje: ' + d.naziv + ', termin ' + tekst + ' Možete li mi javiti cenu?\n\nBroj osoba: ';

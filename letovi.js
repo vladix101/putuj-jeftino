@@ -7,7 +7,8 @@
    Šta radi:
      1. Za svaku destinaciju iz ponude.js koja ima "iata" kod u
         destinacije.js traži povratne letove iz Beograda (Wizz Air i
-        Air Serbia) sa polaskom u narednih 45 dana i tačno onoliko
+        Air Serbia) sa polaskom u narednih 45 dana, samo DIREKTNE letove
+        (bez presedanja, u oba pravca), i tačno onoliko
         noćenja koliko piše u ponudi.
      2. Bira 5 najjeftinijih termina za svaku destinaciju.
      3. Upisuje ih u _letovi/termini.json (build.js ih prikazuje na
@@ -85,6 +86,7 @@ function preuzmi(odrediste, mesecPolaska, mesecPovratka, token) {
     departure_at: mesecPolaska,
     return_at: mesecPovratka,
     one_way: 'false',
+    direct: 'true',
     currency: 'eur',
     sorting: 'price',
     unique: 'false',
@@ -120,6 +122,7 @@ function terminiZaDestinaciju(d, token, danas) {
     var najbolji = {};
     redovi.forEach(function (r) {
       if (!AVIOKOMPANIJE[r.airline] || !r.departure_at || !r.return_at) return;
+      if (r.transfers || r.return_transfers) return; // samo direktni letovi, u oba pravca
       var polazak = r.departure_at.slice(0, 10);
       var povratak = r.return_at.slice(0, 10);
       if (polazak < prviPolazak || polazak > poslednjiPolazak) return;
@@ -131,7 +134,6 @@ function terminiZaDestinaciju(d, token, danas) {
           povratak: povratak,
           cena: r.price,
           aviokompanija: AVIOKOMPANIJE[r.airline],
-          direktno: !r.transfers && !r.return_transfers,
           link: r.link ? 'https://www.aviasales.com' + r.link : ''
         };
       }
@@ -153,18 +155,18 @@ function izvestaj(rezultati, danas) {
     var naslov = '<h2 style="margin:28px 0 8px;font:600 18px Georgia,serif;color:#0A1F3C">' + esc(r.naziv) +
       ' <span style="font:400 13px Arial,sans-serif;color:#5D6E86">(' + r.noci + ' noćenja, ' + esc(r.iata) + ')</span></h2>';
     if (r.greska) return naslov + '<p style="color:#C0392B;font:14px Arial,sans-serif">Greška pri pretrazi: ' + esc(r.greska) + '</p>';
-    if (!r.termini.length) return naslov + '<p style="color:#5D6E86;font:14px Arial,sans-serif">Nema pronađenih letova Wizz Air / Air Serbia za ovaj broj noćenja u narednih ' + DANA_UNAPRED + ' dana.</p>';
+    if (!r.termini.length) return naslov + '<p style="color:#5D6E86;font:14px Arial,sans-serif">Nema pronađenih direktnih letova Wizz Air / Air Serbia za ovaj broj noćenja u narednih ' + DANA_UNAPRED + ' dana.</p>';
     return naslov + '<table cellpadding="6" style="border-collapse:collapse;font:14px Arial,sans-serif;color:#33445C">' +
       '<tr style="background:#F4F8FB;text-align:left"><th>Polazak</th><th>Povratak</th><th>Cena (povratna karta)</th><th>Aviokompanija</th><th></th></tr>' +
       r.termini.map(function (t) {
         return '<tr style="border-top:1px solid #E2E8F0"><td>' + lepDatum(t.polazak) + '</td><td>' + lepDatum(t.povratak) + '</td>' +
-          '<td><b>' + t.cena + ' €</b></td><td>' + esc(t.aviokompanija) + (t.direktno ? '' : ' (sa presedanjem)') + '</td>' +
+          '<td><b>' + t.cena + ' €</b></td><td>' + esc(t.aviokompanija) + '</td>' +
           '<td>' + (t.link ? '<a href="' + esc(t.link) + '">pogledaj</a>' : '') + '</td></tr>';
       }).join('') + '</table>';
   }).join('');
   return '<!doctype html><html><body style="margin:0;padding:24px;background:#fff">' +
     '<h1 style="margin:0 0 6px;font:600 22px Georgia,serif;color:#0A1F3C">Najjeftiniji termini letova — ' + lepDatum(danas) + '</h1>' +
-    '<p style="margin:0;font:14px Arial,sans-serif;color:#5D6E86">Povratni letovi iz Beograda (Wizz Air i Air Serbia), polazak u narednih ' + DANA_UNAPRED +
+    '<p style="margin:0;font:14px Arial,sans-serif;color:#5D6E86">Direktni povratni letovi iz Beograda (Wizz Air i Air Serbia), bez presedanja, polazak u narednih ' + DANA_UNAPRED +
     ' dana. Cene su po osobi, iz skorašnjih pretraga, pa su okvirne — proveri ih pre rezervacije. Na sajtu su prikazani samo datumi.</p>' +
     redovi + '</body></html>';
 }
