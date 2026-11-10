@@ -154,6 +154,8 @@ function zaPodstranicu(html) {
     .replace(/(<a\b[^>]*?\shref=")#(?!vrh")/g, '$1/#');
 }
 
+var UVOD_SKRIPTA = izvuci(/  <!-- uvod-skripta -->[\s\S]*?<!-- \/uvod-skripta -->\n/, 'uvod (skripta)');
+var UVOD = izvuci(/  <!-- uvod -->[\s\S]*?<!-- \/uvod -->\n/, 'uvod');
 var IKONICE = izvuci(/<svg width="0" height="0"[\s\S]*?<\/svg>/, 'ikonice');
 var ZAGLAVLJE = zaPodstranicu(izvuci(/<header class="site-header"[\s\S]*?<\/header>/, 'zaglavlje'));
 var PODNOZJE = zaPodstranicu(izvuci(/<footer class="site-footer">[\s\S]*?<\/footer>/, 'podnožje'));
@@ -445,9 +447,11 @@ GOOGLE_TAG +
 '  <link rel="preload" as="image" href="/' + esc(d.slika) + '">\n' +
 '  <link rel="stylesheet" href="/styles.css">\n' +
 '  <script>document.documentElement.classList.add(\'js\');</script>\n' +
+UVOD_SKRIPTA +
 '  <script type="application/ld+json">' + JSON.stringify(ld).replace(/</g, '\\u003c') + '</script>\n' +
 '</head>\n' +
 '<body class="dest-page">\n' +
+UVOD +
 '  ' + IKONICE + '\n' +
 '  <a class="skip-link" href="#sadrzaj">Preskoči na sadržaj</a>\n' +
 '  <div class="scroll-progress" aria-hidden="true"></div>\n' +

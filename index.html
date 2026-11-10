@@ -50,6 +50,19 @@
   <link rel="stylesheet" href="styles.css">
 
   <script>document.documentElement.classList.add('js');</script>
+  <!-- uvod-skripta -->
+  <script>
+    // Uvodna animacija samo pri prvom ulasku u poseti (i nikad za "smanji animacije")
+    (function () {
+      var html = document.documentElement;
+      try {
+        if (sessionStorage.getItem('pj-uvod') || matchMedia('(prefers-reduced-motion: reduce)').matches) { html.classList.add('bez-uvoda'); return; }
+        sessionStorage.setItem('pj-uvod', '1');
+      } catch (e) { html.classList.add('bez-uvoda'); return; }
+      html.classList.add('uvod-aktivan');
+    })();
+  </script>
+  <!-- /uvod-skripta -->
 
   <script type="application/ld+json">
   {
@@ -80,6 +93,45 @@
   </script>
 </head>
 <body>
+  <!-- uvod -->
+  <div class="uvod" id="uvod" aria-hidden="true">
+    <svg class="uvod-let" viewBox="0 0 600 220" preserveAspectRatio="xMidYMid meet" focusable="false">
+      <defs>
+        <path id="uvod-ruta" d="M10 170 C 140 40, 260 30, 330 110 S 520 190, 590 50"/>
+        <mask id="uvod-maska" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="220">
+          <path d="M10 170 C 140 40, 260 30, 330 110 S 520 190, 590 50" class="uvod-crtanje" pathLength="1"/>
+        </mask>
+      </defs>
+      <use href="#uvod-ruta" class="uvod-putanja" mask="url(#uvod-maska)"/>
+      <g class="uvod-avion">
+        <path d="M21.5 2.5L10.6 13.4M21.5 2.5l-6.9 19-3.9-8.1-8.2-4z" transform="translate(-14 -14) scale(1.15) rotate(45 12 12)" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <animateMotion dur="1.3s" begin="0.1s" fill="freeze" rotate="auto" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines=".45 0 .25 1"><mpath href="#uvod-ruta"/></animateMotion>
+      </g>
+    </svg>
+    <div class="uvod-logo">
+      <span class="uvod-znak"><svg viewBox="0 0 24 24"><path d="M21.5 2.5L10.6 13.4M21.5 2.5l-6.9 19-3.9-8.1-8.2-4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="uvod-ime"><span><span>Putuj</span></span> <span><em>jeftino</em></span></span>
+    </div>
+    <p class="uvod-slogan">Svet je bliže nego što misliš.</p>
+  </div>
+  <script>
+    (function () {
+      var uvod = document.getElementById('uvod');
+      var html = document.documentElement;
+      if (!uvod || !html.classList.contains('uvod-aktivan')) { if (uvod) uvod.remove(); return; }
+      function otkrij() { html.classList.remove('uvod-aktivan'); }
+      function ukloni() { otkrij(); if (uvod.parentNode) uvod.remove(); }
+      var t1 = setTimeout(otkrij, 1450);
+      var t2 = setTimeout(ukloni, 2300);
+      // Klik ili tap odmah preskače uvod
+      uvod.addEventListener('click', function () {
+        clearTimeout(t1); clearTimeout(t2);
+        uvod.classList.add('izlaz'); otkrij();
+        setTimeout(ukloni, 550);
+      });
+    })();
+  </script>
+  <!-- /uvod -->
 
   <!-- Ikonice (koriste se na celom sajtu) -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
