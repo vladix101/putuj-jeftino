@@ -551,6 +551,29 @@
     osvezi();
   }
 
+  /* ---------- Uvodni baner: novogodišnje ponude ili najveće sniženje (računa se iz ponude.js) ---------- */
+  function prikaziBaner() {
+    var baner = $('#hero-baner');
+    if (!baner || !PONUDE.length) return;
+    var filter = '';
+    var tekst = '';
+    var novogodisnje = PONUDE.filter(function (p) { return p.kategorija === 'novagodina'; });
+    if (novogodisnje.length) {
+      tekst = (KATEGORIJE.novagodina || 'Novogodišnje ponude') + ' od ' + formatCena(Math.min.apply(null, novogodisnje.map(function (p) { return p.cena; })));
+      filter = 'novagodina';
+    } else {
+      var najvece = Math.max.apply(null, PONUDE.map(popust));
+      if (najvece > 0) tekst = 'Sniženja do −' + formatCena(najvece);
+    }
+    if (!tekst) return;
+    $('#hero-baner-tekst').textContent = tekst;
+    baner.hidden = false;
+    baner.addEventListener('click', function () {
+      var dugme = filter && $('[data-filter="' + filter + '"]');
+      if (dugme) dugme.click();
+    });
+  }
+
   /* ---------- Merenje upita (Google Analytics) ---------- */
   // Svaki klik na WhatsApp, poziv ili Instagram šalje se kao događaj "kontakt_klik",
   // a uspešno poslata forma kao "upit_poslat"
@@ -581,4 +604,5 @@
   inicijalizujFormu();
   inicijalizujAnimacije();
   inicijalizujMerenje();
+  prikaziBaner();
 })();
