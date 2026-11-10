@@ -60,6 +60,10 @@ body {
 }
 
 body.menu-open { overflow: hidden; }
+/* Stranica nikad ne sme da se pomera levo-desno (overflow-x: hidden na body Safari na iPhone-u ne poštuje) */
+@supports (overflow: clip) {
+  html, body { overflow-x: clip; }
+}
 
 img { display: block; max-width: 100%; height: auto; }
 svg { width: 1.2em; height: 1.2em; flex-shrink: 0; }
@@ -1227,6 +1231,11 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 .js .reveal-right { transform: translateX(36px); }
 .js .reveal-left.is-visible,
 .js .reveal-right.is-visible { transform: none; }
+/* Na telefonu (jedna kolona) sve ulazi odozdo, da ništa ne izlazi van ekrana sa strane */
+@media (max-width: 899px) {
+  .js .reveal-left, .js .reveal-right { transform: translateY(24px); }
+  .js .reveal-left.is-visible, .js .reveal-right.is-visible { transform: none; }
+}
 
 /* Koraci ulaze jedan za drugim */
 .steps .step:nth-child(2) { transition-delay: .12s; }
