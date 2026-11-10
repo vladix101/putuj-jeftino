@@ -1593,7 +1593,72 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 .hero-deal-info .nw { white-space: nowrap; }
 
 /* ---------- Termini letova na stranicama destinacija ---------- */
-.dest-termini { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.1rem 0 0; padding: 0; list-style: none; }
-.dest-termini a { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: .55rem 1rem; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--navy-900); font-weight: 600; text-decoration: none; transition: border-color .2s var(--ease), background-color .2s var(--ease); }
-.dest-termini a:hover { border-color: var(--teal-500); background: var(--teal-50); }
-.dest-termini svg { width: 18px; height: 18px; color: var(--teal-600); }
+.dest-termini { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: .9rem; margin: 1.4rem 0 0; padding: 0; list-style: none; }
+.termin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .55rem;
+  height: 100%;
+  padding: 1.25rem 1rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  color: var(--ink);
+  text-align: center;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
+}
+.termin:hover { transform: translateY(-3px); border-color: var(--teal-500); box-shadow: var(--shadow); }
+.termin-datumi { display: flex; align-items: center; gap: .35rem; }
+.termin-krug {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  width: 62px; height: 62px;
+  border: 2px solid var(--teal-500);
+  border-radius: 50%;
+  background: var(--teal-50);
+  line-height: 1;
+}
+.termin-krug b { font-family: var(--font-display); font-size: 1.55rem; font-weight: 400; color: var(--navy-900); }
+.termin-krug small { margin-top: .15rem; color: var(--teal-700); font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.termin:hover .termin-krug { background: var(--teal-500); }
+.termin:hover .termin-krug b, .termin:hover .termin-krug small { color: var(--navy-950); }
+.termin-linija { position: relative; display: grid; place-items: center; width: 34px; height: 2px; background: repeating-linear-gradient(90deg, var(--teal-500) 0 4px, transparent 4px 8px); }
+.termin-linija svg { position: absolute; width: 16px; height: 16px; color: var(--teal-600); background: #fff; transform: rotate(45deg); }
+.termin-dani { color: var(--muted); font-size: .85rem; font-weight: 600; text-transform: capitalize; }
+.termin-noci { display: inline-flex; align-items: center; gap: .35rem; color: var(--navy-800); font-size: .92rem; font-weight: 700; }
+.termin-noci svg { width: 16px; height: 16px; color: var(--teal-600); }
+.termin-upit { display: inline-flex; align-items: center; gap: .35rem; margin-top: auto; padding-top: .35rem; color: var(--teal-700); font-size: .88rem; font-weight: 700; }
+.termin-upit svg { width: 15px; height: 15px; transition: transform .2s var(--ease); }
+.termin:hover .termin-upit svg { transform: translateX(3px); }
+
+.termin-svoj {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  margin-top: 1.4rem;
+  padding: 1.25rem 1.4rem;
+  border: 1px dashed var(--teal-500);
+  border-radius: var(--radius-lg);
+  background: var(--teal-50);
+}
+.termin-svoj strong { color: var(--ink); font-family: var(--font-display); font-size: 1.35rem; font-weight: 400; }
+.termin-svoj p { margin-top: .25rem; color: var(--text); }
+@media (max-width: 599px) { .termin-svoj .btn { width: 100%; } }
+@media (max-width: 599px) {
+  .dest-termini { grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .termin { gap: .45rem; padding: 1rem .6rem .85rem; }
+  .termin-datumi { gap: .25rem; }
+  .termin-krug { width: 48px; height: 48px; }
+  .termin-krug b { font-size: 1.25rem; }
+  .termin-krug small { font-size: .62rem; }
+  .termin-linija { width: 20px; }
+  .termin-linija svg { width: 13px; height: 13px; }
+  .termin-dani, .termin-upit { font-size: .8rem; }
+  .termin-noci { font-size: .85rem; }
+}

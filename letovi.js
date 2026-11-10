@@ -8,8 +8,8 @@
      1. Za svaku destinaciju iz ponude.js koja ima "iata" kod u
         destinacije.js traži povratne letove iz Beograda (Wizz Air i
         Air Serbia) sa polaskom u narednih 45 dana, samo DIREKTNE letove
-        (bez presedanja, u oba pravca), i tačno onoliko
-        noćenja koliko piše u ponudi.
+        (bez presedanja, u oba pravca), sa onoliko noćenja koliko piše
+        u ponudi ± 1 noć (zbog jeftinijih i brojnijih termina).
      2. Bira 5 najjeftinijih termina za svaku destinaciju.
      3. Upisuje ih u _letovi/termini.json (build.js ih prikazuje na
         stranicama destinacija, BEZ cena) i pravi _letovi/izvestaj.html
@@ -33,6 +33,8 @@ var IZLAZ = path.join(KOREN, '_letovi');
 var POLAZISTE = 'BEG';
 var DANA_UNAPRED = 45;
 var BROJ_TERMINA = 5;
+var ODSTUPANJE_NOCI = 1; // traže se i termini sa jednim noćenjem manje ili više
+var MIN_NOCI = 2;        // ali nikad kraće od 2 noćenja
 // Wizz Air (W6, i njegove podružnice W4 i W9) i Air Serbia (JU)
 var AVIOKOMPANIJE = { W6: 'Wizz Air', W4: 'Wizz Air', W9: 'Wizz Air', JU: 'Air Serbia' };
 var API = 'https://api.travelpayouts.com/aviasales/v3/prices_for_dates';
@@ -107,10 +109,12 @@ function terminiZaDestinaciju(d, token, danas) {
   var prviPolazak = dodajDane(danas, 1);
   var poslednjiPolazak = dodajDane(danas, DANA_UNAPRED);
   // Kombinacije meseca polaska i povratka koje pokrivaju period
+  var minNoci = Math.max(MIN_NOCI, d.noci - ODSTUPANJE_NOCI);
+  var maxNoci = d.noci + ODSTUPANJE_NOCI;
   var kombinacije = {};
   for (var i = 1; i <= DANA_UNAPRED; i++) {
     var pol = dodajDane(danas, i);
-    kombinacije[mesec(pol) + '|' + mesec(dodajDane(pol, d.noci))] = true;
+    for (var n = minNoci; n <= maxNoci; n++) kombinacije[mesec(pol) + '|' + mesec(dodajDane(pol, n))] = true;
   }
 
   return Object.keys(kombinacije).reduce(function (lanac, kombinacija) {
@@ -126,12 +130,16 @@ function terminiZaDestinaciju(d, token, danas) {
       var polazak = r.departure_at.slice(0, 10);
       var povratak = r.return_at.slice(0, 10);
       if (polazak < prviPolazak || polazak > poslednjiPolazak) return;
-      if (razlikaDana(polazak, povratak) !== d.noci) return;
-      // Po jedan (najjeftiniji) let za svaki datum polaska
-      if (!najbolji[polazak] || r.price < najbolji[polazak].cena) {
+      var noci = razlikaDana(polazak, povratak);
+      if (noci < minNoci || noci > maxNoci) return;
+      // Po jedan (najjeftiniji) let za svaki datum polaska; pri istoj ceni prednost ima tačan broj noćenja
+      var bolji = !najbolji[polazak] || r.price < najbolji[polazak].cena ||
+        (r.price === najbolji[polazak].cena && noci === d.noci);
+      if (bolji) {
         najbolji[polazak] = {
           polazak: polazak,
           povratak: povratak,
+          noci: noci,
           cena: r.price,
           aviokompanija: AVIOKOMPANIJE[r.airline],
           link: r.link ? 'https://www.aviasales.com' + r.link : ''
@@ -153,13 +161,13 @@ function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').
 function izvestaj(rezultati, danas) {
   var redovi = rezultati.map(function (r) {
     var naslov = '<h2 style="margin:28px 0 8px;font:600 18px Georgia,serif;color:#0A1F3C">' + esc(r.naziv) +
-      ' <span style="font:400 13px Arial,sans-serif;color:#5D6E86">(' + r.noci + ' noćenja, ' + esc(r.iata) + ')</span></h2>';
+      ' <span style="font:400 13px Arial,sans-serif;color:#5D6E86">(' + r.noci + ' ± 1 noćenja, ' + esc(r.iata) + ')</span></h2>';
     if (r.greska) return naslov + '<p style="color:#C0392B;font:14px Arial,sans-serif">Greška pri pretrazi: ' + esc(r.greska) + '</p>';
-    if (!r.termini.length) return naslov + '<p style="color:#5D6E86;font:14px Arial,sans-serif">Nema pronađenih direktnih letova Wizz Air / Air Serbia za ovaj broj noćenja u narednih ' + DANA_UNAPRED + ' dana.</p>';
+    if (!r.termini.length) return naslov + '<p style="color:#5D6E86;font:14px Arial,sans-serif">Nema pronađenih direktnih letova Wizz Air / Air Serbia za ovaj broj noćenja (± 1) u narednih ' + DANA_UNAPRED + ' dana.</p>';
     return naslov + '<table cellpadding="6" style="border-collapse:collapse;font:14px Arial,sans-serif;color:#33445C">' +
-      '<tr style="background:#F4F8FB;text-align:left"><th>Polazak</th><th>Povratak</th><th>Cena (povratna karta)</th><th>Aviokompanija</th><th></th></tr>' +
+      '<tr style="background:#F4F8FB;text-align:left"><th>Polazak</th><th>Povratak</th><th>Noćenja</th><th>Cena (povratna karta)</th><th>Aviokompanija</th><th></th></tr>' +
       r.termini.map(function (t) {
-        return '<tr style="border-top:1px solid #E2E8F0"><td>' + lepDatum(t.polazak) + '</td><td>' + lepDatum(t.povratak) + '</td>' +
+        return '<tr style="border-top:1px solid #E2E8F0"><td>' + lepDatum(t.polazak) + '</td><td>' + lepDatum(t.povratak) + '</td><td>' + t.noci + '</td>' +
           '<td><b>' + t.cena + ' €</b></td><td>' + esc(t.aviokompanija) + '</td>' +
           '<td>' + (t.link ? '<a href="' + esc(t.link) + '">pogledaj</a>' : '') + '</td></tr>';
       }).join('') + '</table>';

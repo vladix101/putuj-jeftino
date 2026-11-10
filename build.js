@@ -44,6 +44,12 @@ var TERMINI = (function () {
 })();
 
 var MESECI = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'];
+var DANI = ['ned', 'pon', 'uto', 'sre', 'čet', 'pet', 'sub'];
+
+function danUNedelji(iso) { return new Date(iso + 'T00:00:00Z').getUTCDay(); }
+function razlikaDana(a, b) { return Math.round((new Date(b + 'T00:00:00Z') - new Date(a + 'T00:00:00Z')) / 86400000); }
+// 1 noćenje, 2/3/4 noćenja, 5+ noćenja
+function nocenja(n) { return n === 1 ? 'noćenje' : 'noćenja'; }
 
 // "2026-12-06", "2026-12-09" -> "6–9. dec 2026."; preko meseca/godine -> "30. dec 2026 – 2. jan 2027."
 function opsegDatuma(od, doo) {
@@ -264,15 +270,36 @@ function stranica(d, sveDest) {
 
   var termini = (TERMINI[d.slug] || []).filter(function (x) { return x.polazak && x.povratak; });
   var noci = imaPonudu ? parseInt(prva.trajanje, 10) : 0;
-  var terminiHtml = termini.length ? '' +
-    '<section aria-labelledby="termini">' +
+  // Termini se prikazuju za destinacije do kojih se leti (i kad danas nema pronađenih datuma, zbog poziva da pošalju svoj termin)
+  var prikaziTermine = termini.length || (!autobus && t.iata);
+  var porukaSvoj = 'Zdravo! Zanima me putovanje: ' + d.naziv + '. Odgovarao bi mi termin: \n\nBroj osoba: ';
+  var terminiHtml = prikaziTermine ? '' +
+    '<section aria-labelledby="termini" class="dest-termini-sekcija">' +
       '<h2 id="termini">Termini za ' + esc(d.naziv) + ' u narednih 45 dana</h2>' +
-      '<p>Pored termina iz ponude, ovo su datumi sa najpovoljnijim direktnim letovima iz Beograda za ' + (noci ? noci + ' noćenja' : 'ovo putovanje') + '. Klikni na termin koji ti odgovara i javićemo ti tačnu cenu za let i smeštaj.</p>' +
-      '<ul class="dest-termini">' + termini.map(function (x) {
-        var tekst = opsegDatuma(x.polazak, x.povratak);
-        var poruka = 'Zdravo! Zanima me putovanje: ' + d.naziv + ', termin ' + tekst + ' Možete li mi javiti cenu?\n\nBroj osoba: ';
-        return '<li><a href="' + esc(whatsappUrl(poruka)) + '" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-calendar"/></svg>' + esc(tekst) + '</a></li>';
-      }).join('') + '</ul>' +
+      (termini.length
+        ? '<p>Pored termina iz ponude, ovo su datumi sa najpovoljnijim direktnim letovima iz Beograda' + (noci ? ', za ' + (noci - 1 >= 2 ? (noci - 1) + '–' : '') + (noci + 1) + ' noćenja' : '') + '. Klikni na termin koji ti odgovara i javićemo ti tačnu cenu za let i smeštaj.</p>' +
+          '<ul class="dest-termini">' + termini.map(function (x) {
+            var tekst = opsegDatuma(x.polazak, x.povratak);
+            var n = x.noci || razlikaDana(x.polazak, x.povratak);
+            var poruka = 'Zdravo! Zanima me putovanje: ' + d.naziv + ', termin ' + tekst + ' (' + n + ' ' + nocenja(n) + '). Možete li mi javiti cenu?\n\nBroj osoba: ';
+            var a = x.polazak.split('-').map(Number), b = x.povratak.split('-').map(Number);
+            return '<li><a class="termin" href="' + esc(whatsappUrl(poruka)) + '" target="_blank" rel="noopener" aria-label="' + esc('Pošalji upit za termin ' + tekst + ', ' + n + ' ' + nocenja(n)) + '">' +
+              '<span class="termin-datumi">' +
+                '<span class="termin-krug"><b>' + a[2] + '</b><small>' + MESECI[a[1] - 1] + '</small></span>' +
+                '<span class="termin-linija" aria-hidden="true"><svg><use href="#i-plane"/></svg></span>' +
+                '<span class="termin-krug"><b>' + b[2] + '</b><small>' + MESECI[b[1] - 1] + '</small></span>' +
+              '</span>' +
+              '<span class="termin-dani">' + DANI[danUNedelji(x.polazak)] + ' → ' + DANI[danUNedelji(x.povratak)] + '</span>' +
+              '<span class="termin-noci"><svg aria-hidden="true"><use href="#i-moon"/></svg>' + n + ' ' + nocenja(n) + '</span>' +
+              '<span class="termin-upit">Pošalji upit <svg aria-hidden="true"><use href="#i-arrow"/></svg></span>' +
+            '</a></li>';
+          }).join('') + '</ul>'
+        : '<p>Trenutno nemamo izdvojene termine sa direktnim letovima za ovu destinaciju, ali se cene menjaju svakog dana.</p>') +
+      '<div class="termin-svoj">' +
+        '<div><strong>' + (termini.length ? 'Ne odgovaraju ti ovi termini?' : 'Imaš svoj termin?') + '</strong>' +
+        '<p>Javi nam datume koji tebi odgovaraju i proverićemo cenu leta i smeštaja.</p></div>' +
+        '<a class="btn btn-wa" href="' + esc(whatsappUrl(porukaSvoj)) + '" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Pošalji svoj termin</a>' +
+      '</div>' +
       '<p class="dest-note">Termine osvežavamo svakog dana. Dostupnost i cena se proveravaju pri upitu.</p>' +
     '</section>' : '';
 
