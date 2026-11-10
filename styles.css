@@ -1593,7 +1593,11 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 .hero-deal-info .nw { white-space: nowrap; }
 
 /* ---------- Termini letova na stranicama destinacija ---------- */
-.dest-termini { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: .9rem; margin: 1.4rem 0 0; padding: 0; list-style: none; }
+/* Raspored zavisi od širine samog odeljka: 5 u jednom redu kad ima mesta, inače 2×2 (peti termin se tada ne prikazuje) */
+.dest-termini-sekcija { container-type: inline-size; }
+.dest-termini { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin: 1.4rem 0 0; padding: 0; list-style: none; }
+.dest-termini li:nth-child(n+5) { display: none; }
+.dest-termini li:nth-child(3):last-child { grid-column: 1 / -1; }
 .termin {
   display: flex;
   flex-direction: column;
@@ -1651,7 +1655,6 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 .termin-svoj p { margin-top: .25rem; color: var(--text); }
 @media (max-width: 599px) { .termin-svoj .btn { width: 100%; } }
 @media (max-width: 599px) {
-  .dest-termini { grid-template-columns: 1fr 1fr; gap: .6rem; }
   .termin { gap: .45rem; padding: 1rem .6rem .85rem; }
   .termin-datumi { gap: .25rem; }
   .termin-krug { width: 48px; height: 48px; }
@@ -1661,4 +1664,25 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
   .termin-linija svg { width: 13px; height: 13px; }
   .termin-dani, .termin-upit { font-size: .8rem; }
   .termin-noci { font-size: .85rem; }
+}
+
+/* 5 termina u jednom redu (mora posle osnovnih stilova kartice) */
+@container (min-width: 720px) {
+  .dest-termini { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .7rem; }
+  .dest-termini li:nth-child(n+5) { display: block; }
+  .dest-termini li:nth-child(3):last-child { grid-column: auto; }
+  .termin { padding: 1.1rem .5rem .9rem; }
+  .termin-krug { width: 50px; height: 50px; }
+  .termin-krug b { font-size: 1.3rem; }
+  .termin-krug small { font-size: .62rem; }
+  .termin-linija { width: 20px; }
+  .termin-linija svg { width: 13px; height: 13px; }
+  .termin-dani, .termin-upit { font-size: .8rem; }
+  .termin-noci { font-size: .86rem; }
+}
+@container (min-width: 720px) and (max-width: 840px) {
+  .termin-krug { width: 44px; height: 44px; }
+  .termin-krug b { font-size: 1.15rem; }
+  .termin-linija { width: 14px; }
+  .termin-linija svg { width: 11px; height: 11px; }
 }
