@@ -158,6 +158,7 @@ var IKONICE = izvuci(/<svg width="0" height="0"[\s\S]*?<\/svg>/, 'ikonice');
 var ZAGLAVLJE = zaPodstranicu(izvuci(/<header class="site-header"[\s\S]*?<\/header>/, 'zaglavlje'));
 var PODNOZJE = zaPodstranicu(izvuci(/<footer class="site-footer">[\s\S]*?<\/footer>/, 'podnožje'));
 var WA_DUGME = izvuci(/<a class="wa-fab"[\s\S]*?<\/a>/, 'WhatsApp dugme');
+var GOOGLE_TAG = izvuci(/  <!-- Google tag -->[\s\S]*?<!-- \/Google tag -->\n/, 'Google tag');
 var FONTOVI = izvuci(/<link href="https:\/\/fonts\.googleapis\.com\/css2[^>]*>/, 'fontovi');
 
 /* ---------- Lista destinacija u podnožju ---------- */
@@ -418,6 +419,7 @@ function stranica(d, sveDest) {
   return sredi('<!doctype html>\n' +
 '<html lang="sr-Latn">\n' +
 '<head>\n' +
+GOOGLE_TAG +
 '  <meta charset="utf-8">\n' +
 '  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' +
 '  <title>' + esc(naslov) + '</title>\n' +

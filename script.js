@@ -446,6 +446,7 @@
         }).then(function (odg) {
           if (!odg.ok) throw new Error('HTTP ' + odg.status);
           forma.reset();
+          zabelezi({ event: 'upit_poslat', kanal: 'forma', stranica: location.pathname });
           status(statusEl, 'Hvala, ' + podaci.ime + '! Tvoj upit je uspešno poslat. Javićemo ti se uskoro.', 'success');
         }).catch(function () {
           status(statusEl, 'Slanje nije uspelo. Pokušaj ponovo ili nam piši direktno na WhatsApp ili Instagram.', 'error');
@@ -550,6 +551,23 @@
     osvezi();
   }
 
+  /* ---------- Merenje upita (Google Tag Manager / Analytics) ---------- */
+  // Svaki klik na WhatsApp, poziv ili Instagram upisuje se kao događaj "kontakt_klik"
+  function zabelezi(podaci) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(podaci);
+  }
+
+  function inicijalizujMerenje() {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      var kanal = /wa\.me/.test(href) ? 'whatsapp' : /^tel:/.test(href) ? 'telefon' : /instagram\.com/.test(href) ? 'instagram' : '';
+      if (kanal) zabelezi({ event: 'kontakt_klik', kanal: kanal, stranica: location.pathname });
+    });
+  }
+
   /* ---------- Pokretanje ---------- */
   podeliNaslov();
   inicijalizujEfekte();
@@ -561,4 +579,5 @@
   inicijalizujDugmadPonuda();
   inicijalizujFormu();
   inicijalizujAnimacije();
+  inicijalizujMerenje();
 })();
