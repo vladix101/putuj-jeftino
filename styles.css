@@ -1700,10 +1700,10 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 /* Baner stoji gore, u praznom delu slike; naslov i dugmad ostaju pri dnu */
 .hero { align-items: stretch; }
 .hero-content { display: flex; flex-direction: column; justify-content: flex-end; }
-.hero-text { display: flex; flex-direction: column; flex: 1; justify-content: flex-end; }
+.hero-text { display: flex; flex-direction: column; justify-content: flex-end; }
 .hero-baner {
   display: flex;
-  align-self: flex-start;
+  align-self: center;
   align-items: center;
   gap: .9rem;
   width: min(100%, 440px);
@@ -1755,7 +1755,7 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
   .hero-baner-tekst strong { font-size: 1rem; }
   .hero-baner-cena b { font-size: 1.15rem; }
 }
-.hero-baner + .eyebrow { margin-top: 2rem; }
+.hero-baner + .hero-text { margin-top: 2rem; }
 
 .hero-prednosti { display: flex; flex-wrap: wrap; gap: .45rem; margin: 1.1rem 0 0; padding: 0; list-style: none; }
 .hero-prednosti li {
@@ -1775,7 +1775,9 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 .hero-prednosti svg { width: 16px; height: 16px; color: var(--teal-400); }
 
 @media (min-width: 1100px) {
-  .hero-content { display: grid; align-items: stretch; }
-  .hero-text { justify-content: flex-end; }
-  .hero-panel:not([hidden]) { align-self: end; }
+  /* Baner po sredini cele uvodne slike, ispod njega naslov levo i panel desno */
+  .hero-content { display: grid; grid-template-rows: auto 1fr; align-items: end; }
+  .hero-baner { grid-column: 1 / -1; grid-row: 1; justify-self: center; align-self: start; margin-bottom: 0; }
+  .hero-text { grid-column: 1; grid-row: 2; }
+  .hero-panel:not([hidden]) { grid-column: 2; grid-row: 2; align-self: end; }
 }
