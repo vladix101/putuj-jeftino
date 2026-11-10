@@ -551,11 +551,12 @@
     osvezi();
   }
 
-  /* ---------- Merenje upita (Google Tag Manager / Analytics) ---------- */
-  // Svaki klik na WhatsApp, poziv ili Instagram upisuje se kao događaj "kontakt_klik"
+  /* ---------- Merenje upita (Google Analytics) ---------- */
+  // Svaki klik na WhatsApp, poziv ili Instagram šalje se kao događaj "kontakt_klik",
+  // a uspešno poslata forma kao "upit_poslat"
   function zabelezi(podaci) {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(podaci);
+    if (typeof window.gtag !== 'function') return;
+    window.gtag('event', podaci.event, { kanal: podaci.kanal, stranica: podaci.stranica });
   }
 
   function inicijalizujMerenje() {
