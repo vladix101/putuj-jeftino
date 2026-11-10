@@ -1702,26 +1702,59 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 .hero-content { display: flex; flex-direction: column; justify-content: flex-end; }
 .hero-text { display: flex; flex-direction: column; flex: 1; justify-content: flex-end; }
 .hero-baner {
-  display: inline-flex;
+  display: flex;
   align-self: flex-start;
   align-items: center;
-  gap: .65rem;
+  gap: .9rem;
+  width: min(100%, 440px);
   margin-bottom: auto;
-  padding: .5rem 1.1rem .5rem .5rem;
-  border-radius: 999px;
-  background: #FFC93C;
-  color: var(--navy-950);
-  font-size: .95rem;
-  font-weight: 800;
+  padding: .75rem .8rem .75rem .75rem;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(7, 23, 48, .72), rgba(15, 43, 82, .55));
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: 0 18px 40px -18px rgba(7, 23, 48, .7);
+  color: #fff;
   text-decoration: none;
-  box-shadow: 0 10px 28px rgba(7, 23, 48, .35);
-  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+  transition: transform .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease);
 }
 .hero-baner[hidden] { display: none; }
-.hero-baner:hover { transform: translateY(-2px); color: var(--navy-950); box-shadow: 0 14px 32px rgba(7, 23, 48, .45); }
-.hero-baner-ikona { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--navy-950); color: #FFC93C; font-size: 1rem; line-height: 1; }
-.hero-baner svg { width: 1.1em; height: 1.1em; transition: transform .2s var(--ease); }
-.hero-baner:hover svg { transform: translateX(3px); }
+.hero-baner:hover { transform: translateY(-3px); border-color: var(--teal-400); color: #fff; box-shadow: 0 22px 44px -18px rgba(7, 23, 48, .8); }
+.hero-baner-ikona {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--teal-400), var(--teal-600));
+  color: var(--navy-950);
+  box-shadow: 0 6px 16px -6px rgba(45, 212, 191, .7);
+}
+.hero-baner-ikona svg { width: 26px; height: 26px; }
+.hero-baner-tekst { display: flex; flex-direction: column; flex: 1; min-width: 0; line-height: 1.2; }
+.hero-baner-tekst small { color: var(--teal-400); font-size: .68rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.hero-baner-tekst strong { margin-top: .2rem; font-family: var(--font-display); font-size: 1.3rem; font-weight: 400; letter-spacing: -.01em; }
+.hero-baner-mesta { margin-top: .2rem; overflow: hidden; color: rgba(255, 255, 255, .72); font-size: .8rem; text-overflow: ellipsis; white-space: nowrap; }
+.hero-baner-cena { display: flex; flex-direction: column; align-items: flex-end; flex: none; line-height: 1.1; }
+.hero-baner-cena small { color: rgba(255, 255, 255, .65); font-size: .7rem; }
+.hero-baner-cena b { color: var(--teal-400); font-size: 1.35rem; font-weight: 800; white-space: nowrap; }
+.hero-baner-strelica { display: grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 50%; background: #fff; color: var(--navy-950); transition: transform .25s var(--ease), background-color .25s var(--ease); }
+.hero-baner-strelica svg { width: 18px; height: 18px; }
+.hero-baner:hover .hero-baner-strelica { transform: translateX(3px); background: var(--teal-400); }
+@media (max-width: 479px) {
+  .hero-baner { gap: .7rem; padding: .7rem .85rem .7rem .7rem; }
+  .hero-baner-ikona { width: 44px; height: 44px; border-radius: 13px; }
+  .hero-baner-ikona svg { width: 24px; height: 24px; }
+  .hero-baner-tekst small { font-size: .62rem; letter-spacing: .12em; }
+  .hero-baner-tekst strong { font-size: 1.12rem; }
+  .hero-baner-mesta { white-space: normal; }
+  .hero-baner-strelica { display: none; }
+}
+@media (max-width: 359px) {
+  .hero-baner-tekst strong { font-size: 1rem; }
+  .hero-baner-cena b { font-size: 1.15rem; }
+}
 .hero-baner + .eyebrow { margin-top: 2rem; }
 
 .hero-prednosti { display: flex; flex-wrap: wrap; gap: .45rem; margin: 1.1rem 0 0; padding: 0; list-style: none; }
@@ -1745,5 +1778,4 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
   .hero-content { display: grid; align-items: stretch; }
   .hero-text { justify-content: flex-end; }
   .hero-panel:not([hidden]) { align-self: end; }
-  .hero-baner { font-size: 1rem; }
 }

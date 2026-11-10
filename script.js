@@ -555,21 +555,29 @@
   function prikaziBaner() {
     var baner = $('#hero-baner');
     if (!baner || !PONUDE.length) return;
-    var filter = '';
-    var tekst = '';
+    var podaci = null;
     var novogodisnje = PONUDE.filter(function (p) { return p.kategorija === 'novagodina'; });
     if (novogodisnje.length) {
-      tekst = (KATEGORIJE.novagodina || 'Novogodišnje ponude') + ' od ' + formatCena(Math.min.apply(null, novogodisnje.map(function (p) { return p.cena; })));
-      filter = 'novagodina';
+      podaci = {
+        oznaka: 'Doček Nove godine', naslov: KATEGORIJE.novagodina || 'Novogodišnje ponude',
+        ponude: novogodisnje, ikona: 'i-sneg', filter: 'novagodina'
+      };
     } else {
-      var najvece = Math.max.apply(null, PONUDE.map(popust));
-      if (najvece > 0) tekst = 'Sniženja do −' + formatCena(najvece);
+      var snizene = PONUDE.filter(function (p) { return popust(p) > 0; })
+        .sort(function (a, b) { return popust(b) - popust(a); });
+      if (snizene.length) podaci = { oznaka: 'Sniženja do −' + formatCena(popust(snizene[0])), naslov: 'Snižene ponude', ponude: snizene, ikona: 'i-procenat', filter: '' };
     }
-    if (!tekst) return;
-    $('#hero-baner-tekst').textContent = tekst;
+    if (!podaci) return;
+    var mesta = podaci.ponude.map(function (p) { return p.destinacija; }).filter(function (m, i, sva) { return sva.indexOf(m) === i; });
+    $('#hero-baner-oznaka').textContent = podaci.oznaka;
+    $('#hero-baner-naslov').textContent = podaci.naslov;
+    $('#hero-baner-mesta').textContent = mesta.slice(0, 3).join(' · ') + (mesta.length > 3 ? ' i još ' + (mesta.length - 3) : '');
+    $('#hero-baner-cena').textContent = formatCena(Math.min.apply(null, podaci.ponude.map(function (p) { return p.cena; })));
+    $('use', $('#hero-baner-ikona')).setAttribute('href', '#' + podaci.ikona);
+    baner.setAttribute('aria-label', podaci.naslov + ': ' + mesta.join(', ') + ', već od ' + $('#hero-baner-cena').textContent);
     baner.hidden = false;
     baner.addEventListener('click', function () {
-      var dugme = filter && $('[data-filter="' + filter + '"]');
+      var dugme = podaci.filter && $('[data-filter="' + podaci.filter + '"]');
       if (dugme) dugme.click();
     });
   }
