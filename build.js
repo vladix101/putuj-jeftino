@@ -37,6 +37,22 @@ var PONUDE = podaciPonuda.PONUDE || [];
 var KATEGORIJE = podaciPonuda.KATEGORIJE || {};
 var DESTINACIJE = ucitaj('destinacije.js').DESTINACIJE || {};
 
+// Termini letova koje svakog dana pronalazi letovi.js (ako postoje). Cene se ne prikazuju.
+var TERMINI = (function () {
+  try { return JSON.parse(fs.readFileSync(path.join(KOREN, '_letovi', 'termini.json'), 'utf8')).destinacije || {}; }
+  catch (e) { return {}; }
+})();
+
+var MESECI = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'];
+
+// "2026-12-06", "2026-12-09" -> "6–9. dec 2026."; preko meseca/godine -> "30. dec 2026 – 2. jan 2027."
+function opsegDatuma(od, doo) {
+  var a = od.split('-').map(Number), b = doo.split('-').map(Number);
+  if (a[0] === b[0] && a[1] === b[1]) return a[2] + '–' + b[2] + '. ' + MESECI[b[1] - 1] + ' ' + b[0] + '.';
+  if (a[0] === b[0]) return a[2] + '. ' + MESECI[a[1] - 1] + ' – ' + b[2] + '. ' + MESECI[b[1] - 1] + ' ' + b[0] + '.';
+  return a[2] + '. ' + MESECI[a[1] - 1] + ' ' + a[0] + ' – ' + b[2] + '. ' + MESECI[b[1] - 1] + ' ' + b[0] + '.';
+}
+
 /* ---------- Pomoćne funkcije ---------- */
 function esc(str) {
   return String(str == null ? '' : str)
@@ -246,6 +262,20 @@ function stranica(d, sveDest) {
       '<p>Cene prevoza i smeštaja se menjaju, pa se konačna cena i uslovi uvek potvrđuju pri upitu, pre rezervacije.</p>'
     : '<p>Trenutno nemamo aktivnu ponudu za ovu destinaciju, ali se cene prevoza i smeštaja stalno menjaju. Pošalji nam upit sa okvirnim terminom i proverićemo šta trenutno može da se nađe. Cene koje objavljujemo važe kada putuju dve ili više osoba.</p>';
 
+  var termini = (TERMINI[d.slug] || []).filter(function (x) { return x.polazak && x.povratak; });
+  var noci = imaPonudu ? parseInt(prva.trajanje, 10) : 0;
+  var terminiHtml = termini.length ? '' +
+    '<section aria-labelledby="termini">' +
+      '<h2 id="termini">Termini za ' + esc(d.naziv) + ' u narednih 45 dana</h2>' +
+      '<p>Pored termina iz ponude, ovo su datumi sa najpovoljnijim letovima iz Beograda za ' + (noci ? noci + ' noćenja' : 'ovo putovanje') + '. Klikni na termin koji ti odgovara i javićemo ti tačnu cenu za let i smeštaj.</p>' +
+      '<ul class="dest-termini">' + termini.map(function (x) {
+        var tekst = opsegDatuma(x.polazak, x.povratak);
+        var poruka = 'Zdravo! Zanima me putovanje: ' + d.naziv + ', termin ' + tekst + ' Možete li mi javiti cenu?\n\nBroj osoba: ';
+        return '<li><a href="' + esc(whatsappUrl(poruka)) + '" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-calendar"/></svg>' + esc(tekst) + '</a></li>';
+      }).join('') + '</ul>' +
+      '<p class="dest-note">Termine osvežavamo svakog dana. Dostupnost i cena se proveravaju pri upitu.</p>' +
+    '</section>' : '';
+
   var znamenitosti = (t.znamenitosti && t.znamenitosti.length) ? '' +
     '<section aria-labelledby="sta-posetiti">' +
       '<h2 id="sta-posetiti">Šta posetiti ' + esc(lok) + '</h2>' +
@@ -409,6 +439,7 @@ function stranica(d, sveDest) {
 '        <section aria-labelledby="o-putovanju"><h2 id="o-putovanju">Putovanje ' + esc(d.u || 'na ovu destinaciju') + ' po povoljnoj ceni</h2>' + uvod + '</section>\n' +
 '        <section aria-labelledby="sta-dobijas"><h2 id="sta-dobijas">Šta dobijaš uz ovo jeftino putovanje</h2>' + prednosti + '</section>\n' +
 '        <section aria-labelledby="cena"><h2 id="cena">Koliko košta putovanje ' + esc(d.u || 'na ovu destinaciju') + '?</h2>' + cenaTekst + '</section>\n' +
+'        ' + terminiHtml + '\n' +
 '        ' + znamenitosti + '\n' +
 '        ' + transfer + '\n' +
 '        ' + saveti + '\n' +
@@ -443,7 +474,7 @@ function sitemap(dest) {
 }
 
 /* ---------- Kopiranje fajlova ---------- */
-var NE_OBJAVLJUJ = ['build.js', 'destinacije.js'];
+var NE_OBJAVLJUJ = ['build.js', 'destinacije.js', 'letovi.js'];
 var EKSTENZIJE = ['.html', '.css', '.js', '.txt', '.svg', '.png', '.ico', '.webmanifest'];
 
 function kopirajFolder(izvor, cilj) {

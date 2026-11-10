@@ -10,6 +10,8 @@
    postoji tekst ovde, stranica se svejedno napravi, samo bez ovih delova.
 
    POLJA:
+     iata        – kod grada za pretragu letova iz Beograda (npr. "ROM" za
+                   Rim); koristi ga letovi.js. Bez njega se letovi ne traže.
      naziv, drzava, slika – koriste se samo ako trenutno nema ponude za
                    ovu destinaciju (tada stranica i dalje postoji, sa
                    porukom da je ponuda trenutno rasprodata)
@@ -24,6 +26,7 @@
 window.DESTINACIJE = {
 
   larnaka: {
+    iata: "LCA",
     naziv: "Larnaka",
     drzava: "Kipar",
     slika: "images/larnaka.jpg",
@@ -53,6 +56,7 @@ window.DESTINACIJE = {
   },
 
   alikante: {
+    iata: "ALC",
     naziv: "Alikante",
     drzava: "Španija",
     slika: "images/alikante.jpg",
@@ -82,6 +86,7 @@ window.DESTINACIJE = {
   },
 
   rim: {
+    iata: "ROM",
     naziv: "Rim",
     drzava: "Italija",
     slika: "images/rim.webp",
@@ -111,6 +116,7 @@ window.DESTINACIJE = {
   },
 
   milano: {
+    iata: "MIL",
     naziv: "Milano",
     drzava: "Italija",
     slika: "images/milano.webp",
@@ -140,6 +146,7 @@ window.DESTINACIJE = {
   },
 
   malta: {
+    iata: "MLA",
     naziv: "Malta",
     drzava: "Malta",
     slika: "images/malta.jpg",
@@ -169,6 +176,7 @@ window.DESTINACIJE = {
   },
 
   madrid: {
+    iata: "MAD",
     naziv: "Madrid",
     drzava: "Španija",
     slika: "images/madrid.webp",
@@ -198,6 +206,7 @@ window.DESTINACIJE = {
   },
 
   pariz: {
+    iata: "PAR",
     naziv: "Pariz",
     drzava: "Francuska",
     slika: "images/pariz.webp",
@@ -227,6 +236,7 @@ window.DESTINACIJE = {
   },
 
   nica: {
+    iata: "NCE",
     naziv: "Nica",
     drzava: "Francuska",
     slika: "images/nica.webp",
@@ -256,6 +266,7 @@ window.DESTINACIJE = {
   },
 
   barselona: {
+    iata: "BCN",
     naziv: "Barselona",
     drzava: "Španija",
     slika: "images/barselona.webp",
@@ -285,6 +296,7 @@ window.DESTINACIJE = {
   },
 
   stokholm: {
+    iata: "STO",
     naziv: "Stokholm",
     drzava: "Švedska",
     slika: "images/stokholm.jpg",
@@ -314,6 +326,7 @@ window.DESTINACIJE = {
   },
 
   malme: {
+    iata: "MMA",
     naziv: "Malme",
     drzava: "Švedska",
     slika: "images/malme.jpg",
@@ -343,6 +356,7 @@ window.DESTINACIJE = {
   },
 
   atina: {
+    iata: "ATH",
     naziv: "Atina",
     drzava: "Grčka",
     slika: "images/atina.jpg",
@@ -402,6 +416,7 @@ window.DESTINACIJE = {
   },
 
   bukurest: {
+    iata: "BUH",
     naziv: "Bukurešt",
     drzava: "Rumunija",
     slika: "images/bukurest.jpg",
@@ -431,6 +446,7 @@ window.DESTINACIJE = {
   },
 
   sofija: {
+    iata: "SOF",
     naziv: "Sofija",
     drzava: "Bugarska",
     slika: "images/sofija.jpg",

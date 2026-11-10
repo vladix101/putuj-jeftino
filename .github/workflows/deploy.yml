@@ -4,12 +4,25 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Svakog dana u 4:23 UTC (5:23 zimi, 6:23 leti po našem vremenu):
+    # osvežava termine letova, objavljuje sajt i šalje mejl sa cenama
+    - cron: "23 4 * * *"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
+      GMAIL_USER: ${{ secrets.GMAIL_USER }}
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Pronađi najjeftinije termine letova
+        if: env.TRAVELPAYOUTS_TOKEN != ''
+        continue-on-error: true
+        run: node letovi.js
 
       - name: Napravi sajt (stranice destinacija i sitemap)
         run: node build.js
@@ -20,3 +33,17 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy _site --project-name=putuj-jeftino --branch=main
+
+      - name: Pošalji mejl sa cenama letova
+        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && env.GMAIL_USER != '' && env.GMAIL_APP_PASSWORD != '' && hashFiles('_letovi/izvestaj.html') != ''
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.GMAIL_USER }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: Najjeftiniji termini letova — Putuj jeftino
+          to: ${{ secrets.GMAIL_USER }}
+          from: Putuj jeftino <${{ secrets.GMAIL_USER }}>
+          html_body: file://_letovi/izvestaj.html
