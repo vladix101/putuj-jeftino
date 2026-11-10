@@ -271,7 +271,9 @@ function stranica(d, sveDest) {
   var termini = (TERMINI[d.slug] || []).filter(function (x) { return x.polazak && x.povratak; });
   var noci = imaPonudu ? parseInt(prva.trajanje, 10) : 0;
   // Termini se prikazuju za destinacije do kojih se leti (i kad danas nema pronađenih datuma, zbog poziva da pošalju svoj termin)
-  var prikaziTermine = termini.length || (!autobus && t.iata);
+  // Novogodišnje ponude imaju fiksne datume, pa za njih nema ovog odeljka
+  var novogodisnja = d.ponude.some(function (p) { return p.kategorija === 'novagodina'; });
+  var prikaziTermine = !novogodisnja && (termini.length || (!autobus && t.iata));
   var porukaSvoj = 'Zdravo! Zanima me putovanje: ' + d.naziv + '. Odgovarao bi mi termin: \n\nBroj osoba: ';
   var terminiHtml = prikaziTermine ? '' +
     '<section aria-labelledby="termini" class="dest-termini-sekcija">' +

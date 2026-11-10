@@ -71,7 +71,8 @@ function destinacijeZaPretragu() {
   PONUDE.forEach(function (p) {
     var k = slug(p.destinacija);
     var tekst = DESTINACIJE[k] || {};
-    if (vidjeno[k] || p.prevoz === 'autobus' || !tekst.iata) return;
+    // Preskaču se autobuske i novogodišnje ponude (one imaju fiksne datume)
+    if (vidjeno[k] || p.prevoz === 'autobus' || p.kategorija === 'novagodina' || !tekst.iata) return;
     var noci = parseInt(p.trajanje, 10);
     if (!noci) return;
     vidjeno[k] = true;
