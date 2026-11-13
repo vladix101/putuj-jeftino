@@ -82,20 +82,21 @@ function destinacijeZaPretragu() {
 }
 
 /* ---------- Pretraga ---------- */
-function preuzmi(odrediste, mesecPolaska, mesecPovratka, token) {
-  var upit = new URLSearchParams({
-    origin: POLAZISTE,
-    destination: odrediste,
+// Jedan upit ka Travelpayouts-u: povratne karte (povratak zadat) ili jednosmerne (bez povratka)
+function preuzmi(od, ka, mesecPolaska, mesecPovratka, token) {
+  var parametri = {
+    origin: od,
+    destination: ka,
     departure_at: mesecPolaska,
-    return_at: mesecPovratka,
-    one_way: 'false',
+    one_way: mesecPovratka ? 'false' : 'true',
     direct: 'true',
     currency: 'eur',
     sorting: 'price',
     unique: 'false',
     limit: '1000'
-  });
-  return fetch(API + '?' + upit, { headers: { 'X-Access-Token': token, 'Accept-Encoding': 'gzip' } })
+  };
+  if (mesecPovratka) parametri.return_at = mesecPovratka;
+  return fetch(API + '?' + new URLSearchParams(parametri), { headers: { 'X-Access-Token': token, 'Accept-Encoding': 'gzip' } })
     .then(function (odg) {
       if (!odg.ok) throw new Error('HTTP ' + odg.status);
       return odg.json();
@@ -106,52 +107,92 @@ function preuzmi(odrediste, mesecPolaska, mesecPovratka, token) {
     });
 }
 
+function uzastopno(zadaci) {
+  return zadaci.reduce(function (lanac, zadatak) {
+    return lanac.then(function (sve) { return zadatak().then(function (r) { return sve.concat(r); }); });
+  }, Promise.resolve([]));
+}
+
+function link(r) { return r.link ? 'https://www.aviasales.com' + r.link : ''; }
+
+// Najjeftiniji direktan jednosmerni let Wizz Air / Air Serbia za svaki datum
+function poDanima(redovi) {
+  var dani = {};
+  redovi.forEach(function (r) {
+    if (!AVIOKOMPANIJE[r.airline] || !r.departure_at || r.transfers) return;
+    var dan = r.departure_at.slice(0, 10);
+    if (!dani[dan] || r.price < dani[dan].cena) dani[dan] = { cena: r.price, aviokompanija: AVIOKOMPANIJE[r.airline], link: link(r), ruta: (r.origin_airport || r.origin) + '→' + (r.destination_airport || r.destination) };
+  });
+  return dani;
+}
+
 function terminiZaDestinaciju(d, token, danas) {
   var prviPolazak = dodajDane(danas, 1);
   var poslednjiPolazak = dodajDane(danas, DANA_UNAPRED);
-  // Kombinacije meseca polaska i povratka koje pokrivaju period
   var minNoci = Math.max(MIN_NOCI, d.noci - ODSTUPANJE_NOCI);
   var maxNoci = d.noci + ODSTUPANJE_NOCI;
-  var kombinacije = {};
+
+  // Meseci koji pokrivaju polaske i povratke u periodu
+  var meseciPolaska = {}, meseciPovratka = {}, kombinacije = {};
   for (var i = 1; i <= DANA_UNAPRED; i++) {
     var pol = dodajDane(danas, i);
-    for (var n = minNoci; n <= maxNoci; n++) kombinacije[mesec(pol) + '|' + mesec(dodajDane(pol, n))] = true;
+    meseciPolaska[mesec(pol)] = true;
+    for (var n = minNoci; n <= maxNoci; n++) {
+      meseciPovratka[mesec(dodajDane(pol, n))] = true;
+      kombinacije[mesec(pol) + '|' + mesec(dodajDane(pol, n))] = true;
+    }
   }
 
-  return Object.keys(kombinacije).reduce(function (lanac, kombinacija) {
-    var delovi = kombinacija.split('|');
-    return lanac.then(function (sve) {
-      return preuzmi(d.iata, delovi[0], delovi[1], token).then(function (redovi) { return sve.concat(redovi); });
-    });
-  }, Promise.resolve([])).then(function (redovi) {
-    var najbolji = {};
-    redovi.forEach(function (r) {
-      if (!AVIOKOMPANIJE[r.airline] || !r.departure_at || !r.return_at) return;
-      if (r.transfers || r.return_transfers) return; // samo direktni letovi, u oba pravca
-      var polazak = r.departure_at.slice(0, 10);
-      var povratak = r.return_at.slice(0, 10);
-      if (polazak < prviPolazak || polazak > poslednjiPolazak) return;
-      var noci = razlikaDana(polazak, povratak);
-      if (noci < minNoci || noci > maxNoci) return;
-      // Po jedan (najjeftiniji) let za svaki datum polaska; pri istoj ceni prednost ima tačan broj noćenja
-      var bolji = !najbolji[polazak] || r.price < najbolji[polazak].cena ||
-        (r.price === najbolji[polazak].cena && noci === d.noci);
-      if (bolji) {
-        najbolji[polazak] = {
-          polazak: polazak,
-          povratak: povratak,
-          noci: noci,
-          cena: r.price,
-          aviokompanija: AVIOKOMPANIJE[r.airline],
-          link: r.link ? 'https://www.aviasales.com' + r.link : ''
-        };
+  // 1) Jednosmerne karte u oba smera (Wizz Air prodaje odlazak i povratak odvojeno) i 2) povratne karte
+  var odlasci = uzastopno(Object.keys(meseciPolaska).map(function (m) { return function () { return preuzmi(POLAZISTE, d.iata, m, null, token); }; }));
+  var povratci = function () { return uzastopno(Object.keys(meseciPovratka).map(function (m) { return function () { return preuzmi(d.iata, POLAZISTE, m, null, token); }; })); };
+  var povratne = function () { return uzastopno(Object.keys(kombinacije).map(function (k) { var x = k.split('|'); return function () { return preuzmi(POLAZISTE, d.iata, x[0], x[1], token); }; })); };
+
+  var tamo, nazad;
+  return odlasci
+    .then(function (r) { tamo = poDanima(r); return povratci(); })
+    .then(function (r) { nazad = poDanima(r); return povratne(); })
+    .then(function (redovi) {
+      var najbolji = {};
+      function predlozi(t) {
+        if (t.polazak < prviPolazak || t.polazak > poslednjiPolazak) return;
+        if (t.noci < minNoci || t.noci > maxNoci) return;
+        // Po jedan (najjeftiniji) termin za svaki datum polaska; pri istoj ceni prednost ima tačan broj noćenja
+        var stari = najbolji[t.polazak];
+        if (!stari || t.cena < stari.cena || (t.cena === stari.cena && t.noci === d.noci)) najbolji[t.polazak] = t;
       }
+
+      // Odlazak + povratak kao dve jednosmerne karte
+      Object.keys(tamo).forEach(function (polazak) {
+        for (var n = minNoci; n <= maxNoci; n++) {
+          var povratak = dodajDane(polazak, n);
+          var a = tamo[polazak], b = nazad[povratak];
+          if (!b) continue;
+          predlozi({
+            polazak: polazak, povratak: povratak, noci: n, cena: a.cena + b.cena,
+            aviokompanija: a.aviokompanija === b.aviokompanija ? a.aviokompanija : a.aviokompanija + ' / ' + b.aviokompanija,
+            detalji: 'odlazak ' + a.aviokompanija + ' ' + a.ruta + ' ' + a.cena + ' €, povratak ' + b.aviokompanija + ' ' + b.ruta + ' ' + b.cena + ' €',
+            link: a.link, linkPovratak: b.link
+          });
+        }
+      });
+
+      // Povratne karte (ponekad jeftinije, npr. kod Air Serbia)
+      redovi.forEach(function (r) {
+        if (!AVIOKOMPANIJE[r.airline] || !r.departure_at || !r.return_at) return;
+        if (r.transfers || r.return_transfers) return; // samo direktni letovi, u oba pravca
+        var polazak = r.departure_at.slice(0, 10), povratak = r.return_at.slice(0, 10);
+        predlozi({
+          polazak: polazak, povratak: povratak, noci: razlikaDana(polazak, povratak), cena: r.price,
+          aviokompanija: AVIOKOMPANIJE[r.airline], detalji: 'povratna karta ' + (r.origin_airport || r.origin) + '⇄' + (r.destination_airport || r.destination), link: link(r)
+        });
+      });
+
+      return Object.keys(najbolji).map(function (k) { return najbolji[k]; })
+        .sort(function (a, b) { return a.cena - b.cena; })
+        .slice(0, BROJ_TERMINA)
+        .sort(function (a, b) { return a.polazak < b.polazak ? -1 : 1; });
     });
-    return Object.keys(najbolji).map(function (k) { return najbolji[k]; })
-      .sort(function (a, b) { return a.cena - b.cena; })
-      .slice(0, BROJ_TERMINA)
-      .sort(function (a, b) { return a.polazak < b.polazak ? -1 : 1; });
-  });
 }
 
 /* ---------- Izveštaj za mejl ---------- */
@@ -166,17 +207,17 @@ function izvestaj(rezultati, danas) {
     if (r.greska) return naslov + '<p style="color:#C0392B;font:14px Arial,sans-serif">Greška pri pretrazi: ' + esc(r.greska) + '</p>';
     if (!r.termini.length) return naslov + '<p style="color:#5D6E86;font:14px Arial,sans-serif">Nema pronađenih direktnih letova Wizz Air / Air Serbia za ovaj broj noćenja (± 1) u narednih ' + DANA_UNAPRED + ' dana.</p>';
     return naslov + '<table cellpadding="6" style="border-collapse:collapse;font:14px Arial,sans-serif;color:#33445C">' +
-      '<tr style="background:#F4F8FB;text-align:left"><th>Polazak</th><th>Povratak</th><th>Noćenja</th><th>Cena (povratna karta)</th><th>Aviokompanija</th><th></th></tr>' +
+      '<tr style="background:#F4F8FB;text-align:left"><th>Polazak</th><th>Povratak</th><th>Noćenja</th><th>Cena (odlazak + povratak)</th><th>Aviokompanija</th><th></th></tr>' +
       r.termini.map(function (t) {
         return '<tr style="border-top:1px solid #E2E8F0"><td>' + lepDatum(t.polazak) + '</td><td>' + lepDatum(t.povratak) + '</td><td>' + t.noci + '</td>' +
-          '<td><b>' + t.cena + ' €</b></td><td>' + esc(t.aviokompanija) + '</td>' +
-          '<td>' + (t.link ? '<a href="' + esc(t.link) + '">pogledaj</a>' : '') + '</td></tr>';
+          '<td><b>' + t.cena + ' €</b>' + (t.detalji ? '<br><small style="color:#5D6E86">' + esc(t.detalji) + '</small>' : '') + '</td><td>' + esc(t.aviokompanija) + '</td>' +
+          '<td>' + (t.link ? '<a href="' + esc(t.link) + '">' + (t.linkPovratak ? 'odlazak' : 'pogledaj') + '</a>' : '') + (t.linkPovratak ? ' · <a href="' + esc(t.linkPovratak) + '">povratak</a>' : '') + '</td></tr>';
       }).join('') + '</table>';
   }).join('');
   return '<!doctype html><html><body style="margin:0;padding:24px;background:#fff">' +
     '<h1 style="margin:0 0 6px;font:600 22px Georgia,serif;color:#0A1F3C">Najjeftiniji termini letova — ' + lepDatum(danas) + '</h1>' +
     '<p style="margin:0;font:14px Arial,sans-serif;color:#5D6E86">Direktni povratni letovi iz Beograda (Wizz Air i Air Serbia), bez presedanja, polazak u narednih ' + DANA_UNAPRED +
-    ' dana. Cene su po osobi, iz skorašnjih pretraga, pa su okvirne — proveri ih pre rezervacije. Na sajtu su prikazani samo datumi.</p>' +
+    ' dana. Cena je zbir odlaska i povratka (ili povratna karta, ako je jeftinija), po osobi, iz skorašnjih pretraga, pa su okvirne — proveri ih pre rezervacije. Na sajtu su prikazani samo datumi.</p>' +
     redovi + '</body></html>';
 }
 
