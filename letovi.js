@@ -214,17 +214,17 @@ function izvestaj(rezultati, danas) {
     if (r.greska) return naslov + '<p style="color:#C0392B;font:14px Arial,sans-serif">Greška pri pretrazi: ' + esc(r.greska) + '</p>';
     if (!r.termini.length) return naslov + '<p style="color:#5D6E86;font:14px Arial,sans-serif">Nema pronađenih direktnih letova Wizz Air / Air Serbia za ovaj broj noćenja (± 1) u narednih ' + DANA_UNAPRED + ' dana.</p>';
     return naslov + '<table cellpadding="6" style="border-collapse:collapse;font:14px Arial,sans-serif;color:#33445C">' +
-      '<tr style="background:#F4F8FB;text-align:left"><th>Polazak</th><th>Povratak</th><th>Noćenja</th><th>Cena (odlazak + povratak)</th><th>Aviokompanija</th><th></th></tr>' +
+      '<tr style="background:#F4F8FB;text-align:left"><th>Polazak</th><th>Povratak</th><th>Noćenja</th><th>Cena (povratna karta)</th><th>Aviokompanija</th><th></th></tr>' +
       r.termini.map(function (t) {
         return '<tr style="border-top:1px solid #E2E8F0"><td>' + lepDatum(t.polazak) + '</td><td>' + lepDatum(t.povratak) + '</td><td>' + t.noci + '</td>' +
-          '<td><b>' + t.cena + ' €</b>' + (t.detalji ? '<br><small style="color:#5D6E86">' + esc(t.detalji) + '</small>' : '') + '</td><td>' + esc(t.aviokompanija) + '</td>' +
-          '<td>' + (t.link ? '<a href="' + esc(t.link) + '">' + (t.linkPovratak ? 'odlazak' : 'pogledaj') + '</a>' : '') + (t.linkPovratak ? ' · <a href="' + esc(t.linkPovratak) + '">povratak</a>' : '') + '</td></tr>';
+          '<td><b>' + t.cena + ' €</b></td><td>' + esc(t.aviokompanija) + '</td>' +
+          '<td>' + (t.link ? '<a href="' + esc(t.link) + '">pogledaj</a>' : '') + '</td></tr>';
       }).join('') + '</table>';
   }).join('');
   return '<!doctype html><html><body style="margin:0;padding:24px;background:#fff">' +
     '<h1 style="margin:0 0 6px;font:600 22px Georgia,serif;color:#0A1F3C">Najjeftiniji termini letova — ' + lepDatum(danas) + '</h1>' +
     '<p style="margin:0;font:14px Arial,sans-serif;color:#5D6E86">Direktni povratni letovi iz Beograda (Wizz Air i Air Serbia), bez presedanja, polazak u narednih ' + DANA_UNAPRED +
-    ' dana. Cena je zbir odlaska i povratka (ili povratna karta, ako je jeftinija), po osobi, iz skorašnjih pretraga, pa su okvirne — proveri ih pre rezervacije. Na sajtu su prikazani samo datumi.</p>' +
+    ' dana. Cene su po osobi, iz skorašnjih pretraga, pa su okvirne — proveri ih pre rezervacije. Na sajtu su prikazani samo datumi.</p>' +
     redovi + '</body></html>';
 }
 
