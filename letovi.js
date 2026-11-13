@@ -115,13 +115,18 @@ function uzastopno(zadaci) {
 
 function link(r) { return r.link ? 'https://www.aviasales.com' + r.link : ''; }
 
-// Najjeftiniji direktan jednosmerni let Wizz Air / Air Serbia za svaki datum
+// Najjeftiniji direktan jednosmerni let za svaki datum, posebno za svaku aviokompaniju
+// (dani["2026-12-09"]["Wizz Air"] = { cena, link, ruta })
 function poDanima(redovi) {
   var dani = {};
   redovi.forEach(function (r) {
-    if (!AVIOKOMPANIJE[r.airline] || !r.departure_at || r.transfers) return;
+    var kompanija = AVIOKOMPANIJE[r.airline];
+    if (!kompanija || !r.departure_at || r.transfers) return;
     var dan = r.departure_at.slice(0, 10);
-    if (!dani[dan] || r.price < dani[dan].cena) dani[dan] = { cena: r.price, aviokompanija: AVIOKOMPANIJE[r.airline], link: link(r), ruta: (r.origin_airport || r.origin) + '→' + (r.destination_airport || r.destination) };
+    dani[dan] = dani[dan] || {};
+    if (!dani[dan][kompanija] || r.price < dani[dan][kompanija].cena) {
+      dani[dan][kompanija] = { cena: r.price, aviokompanija: kompanija, link: link(r), ruta: (r.origin_airport || r.origin) + '→' + (r.destination_airport || r.destination) };
+    }
   });
   return dani;
 }
@@ -162,17 +167,19 @@ function terminiZaDestinaciju(d, token, danas) {
         if (!stari || t.cena < stari.cena || (t.cena === stari.cena && t.noci === d.noci)) najbolji[t.polazak] = t;
       }
 
-      // Odlazak + povratak kao dve jednosmerne karte
+      // Odlazak + povratak kao dve jednosmerne karte, uvek sa ISTOM aviokompanijom
       Object.keys(tamo).forEach(function (polazak) {
         for (var n = minNoci; n <= maxNoci; n++) {
           var povratak = dodajDane(polazak, n);
-          var a = tamo[polazak], b = nazad[povratak];
-          if (!b) continue;
+          Object.keys(tamo[polazak]).forEach(function (kompanija) {
+          var a = tamo[polazak][kompanija], b = (nazad[povratak] || {})[kompanija];
+          if (!b) return;
           predlozi({
             polazak: polazak, povratak: povratak, noci: n, cena: a.cena + b.cena,
-            aviokompanija: a.aviokompanija === b.aviokompanija ? a.aviokompanija : a.aviokompanija + ' / ' + b.aviokompanija,
+            aviokompanija: kompanija,
             detalji: 'odlazak ' + a.aviokompanija + ' ' + a.ruta + ' ' + a.cena + ' €, povratak ' + b.aviokompanija + ' ' + b.ruta + ' ' + b.cena + ' €',
             link: a.link, linkPovratak: b.link
+          });
           });
         }
       });
