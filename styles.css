@@ -610,7 +610,7 @@ body.menu-open .header-ig:hover { background: var(--teal-50); color: var(--teal-
 @media (max-width: 599px) {
   .hero-actions .btn { flex: 1 1 100%; }
   .scroll-cue { display: none; }
-  .hero { padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)); }
+  .hero { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
 }
 @media (max-width: 459px) { .eyebrow-handle { display: none; } }
 @media (min-width: 900px) {
@@ -1757,22 +1757,6 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
 }
 .hero-baner + .hero-text { margin-top: 2rem; }
 
-.hero-prednosti { display: flex; flex-wrap: wrap; gap: .45rem; margin: 1.1rem 0 0; padding: 0; list-style: none; }
-.hero-prednosti li {
-  display: inline-flex;
-  align-items: center;
-  gap: .4rem;
-  padding: .35rem .8rem;
-  border: 1px solid rgba(255, 255, 255, .28);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .12);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  color: #fff;
-  font-size: .85rem;
-  font-weight: 600;
-}
-.hero-prednosti svg { width: 16px; height: 16px; color: var(--teal-400); }
 
 @media (min-width: 1100px) {
   /* Baner po sredini cele uvodne slike, ispod njega naslov levo i panel desno */

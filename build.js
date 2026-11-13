@@ -419,10 +419,11 @@ function stranica(d, sveDest) {
     (imaPonudu ? '<li class="dest-chip-price">' + (d.popust ? '<s>' + esc(formatCena(d.staraCena)) + '</s> ' : '') + 'od ' + esc(formatCena(d.najniza)) + ' po osobi</li>' : '');
 
   return sredi('<!doctype html>\n' +
-'<html lang="sr-Latn">\n' +
+'<html lang="sr-Latn" translate="no">\n' +
 '<head>\n' +
 GOOGLE_TAG +
 '  <meta charset="utf-8">\n' +
+'  <meta name="google" content="notranslate">\n' +
 '  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' +
 '  <title>' + esc(naslov) + '</title>\n' +
 '  <meta name="description" content="' + esc(opis) + '">\n' +
