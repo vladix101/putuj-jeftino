@@ -5,29 +5,55 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    # Svakog dana u 4:23 UTC (5:23 zimi, 6:23 leti po našem vremenu):
-    # osvežava termine letova, objavljuje sajt i šalje mejl sa cenama
-    - cron: "23 4 * * *"
+    # Svakih sat vremena proverava da li je notes sa letovima na Drive-u izmenjen.
+    # Ako jeste: osvežava termine na sajtu, objavljuje sajt i šalje mejl sa cenama.
+    - cron: "17 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: objava
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
       GMAIL_USER: ${{ secrets.GMAIL_USER }}
       GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Pronađi najjeftinije termine letova
-        if: env.TRAVELPAYOUTS_TOKEN != ''
+      - name: Preuzmi notes sa letovima i proveri izmenu
+        id: notes
         continue-on-error: true
-        run: node letovi.js
+        run: |
+          node termini.js
+          if git diff --quiet -- _letovi/notes.sha256; then
+            echo "izmenjen=ne" >> "$GITHUB_OUTPUT"
+            echo "Notes nije menjan od poslednje provere."
+          else
+            echo "izmenjen=da" >> "$GITHUB_OUTPUT"
+            echo "Notes je izmenjen."
+          fi
+
+      - name: Sačuvaj nove termine u repou
+        if: steps.notes.outputs.izmenjen == 'da'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _letovi/termini.json _letovi/notes.sha256
+          git commit -m "Osveženi termini letova iz notesa"
+          git pull --rebase origin main
+          git push origin HEAD:main
 
       - name: Napravi sajt (stranice destinacija i sitemap)
+        if: github.event_name != 'schedule' || steps.notes.outputs.izmenjen == 'da'
         run: node build.js
 
       - name: Objavi na Cloudflare Pages
+        if: github.event_name != 'schedule' || steps.notes.outputs.izmenjen == 'da'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -35,7 +61,7 @@ jobs:
           command: pages deploy _site --project-name=putuj-jeftino --branch=main
 
       - name: Pošalji mejl sa cenama letova
-        if: (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && env.GMAIL_USER != '' && env.GMAIL_APP_PASSWORD != '' && hashFiles('_letovi/izvestaj.html') != ''
+        if: (steps.notes.outputs.izmenjen == 'da' || github.event_name == 'workflow_dispatch') && env.GMAIL_USER != '' && env.GMAIL_APP_PASSWORD != '' && hashFiles('_letovi/izvestaj.html') != ''
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com

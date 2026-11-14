@@ -11,7 +11,7 @@
 
    POLJA:
      iata        – kod grada za pretragu letova iz Beograda (npr. "ROM" za
-                   Rim); koristi ga letovi.js. Bez njega se letovi ne traže.
+                   Rim); nije obavezan.
      naziv, drzava, slika – koriste se samo ako trenutno nema ponude za
                    ovu destinaciju (tada stranica i dalje postoji, sa
                    porukom da je ponuda trenutno rasprodata)

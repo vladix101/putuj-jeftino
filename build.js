@@ -37,7 +37,7 @@ var PONUDE = podaciPonuda.PONUDE || [];
 var KATEGORIJE = podaciPonuda.KATEGORIJE || {};
 var DESTINACIJE = ucitaj('destinacije.js').DESTINACIJE || {};
 
-// Termini letova koje svakog dana pronalazi letovi.js (ako postoje). Cene se ne prikazuju.
+// Termini letova iz notesa sa Drive-a (termini.js). Cene se ne prikazuju na sajtu.
 var TERMINI = (function () {
   try { return JSON.parse(fs.readFileSync(path.join(KOREN, '_letovi', 'termini.json'), 'utf8')).destinacije || {}; }
   catch (e) { return {}; }
@@ -271,7 +271,8 @@ function stranica(d, sveDest) {
       '<p>Cene prevoza i smeštaja se menjaju, pa se konačna cena i uslovi uvek potvrđuju pri upitu, pre rezervacije.</p>'
     : '<p>Trenutno nemamo aktivnu ponudu za ovu destinaciju, ali se cene prevoza i smeštaja stalno menjaju. Pošalji nam upit sa okvirnim terminom i proverićemo šta trenutno može da se nađe. Cene koje objavljujemo važe kada putuju dve ili više osoba.</p>';
 
-  var termini = (TERMINI[d.slug] || []).filter(function (x) { return x.polazak && x.povratak; });
+  var danasIso = new Date().toISOString().slice(0, 10);
+  var termini = (TERMINI[d.slug] || []).filter(function (x) { return x.polazak && x.povratak && x.polazak > danasIso; });
   var noci = imaPonudu ? parseInt(prva.trajanje, 10) : 0;
   // Termini se prikazuju za destinacije do kojih se leti (i kad danas nema pronađenih datuma, zbog poziva da pošalju svoj termin)
   // Novogodišnje ponude imaju fiksne datume, pa za njih nema ovog odeljka
@@ -280,7 +281,7 @@ function stranica(d, sveDest) {
   var porukaSvoj = 'Zdravo! Zanima me putovanje: ' + d.naziv + '. Odgovarao bi mi termin: \n\nBroj osoba: ';
   var terminiHtml = prikaziTermine ? '' +
     '<section aria-labelledby="termini" class="dest-termini-sekcija">' +
-      '<h2 id="termini">Termini za putovanje ' + esc(d.u || 'na ovu destinaciju') + ' u narednih 45 dana</h2>' +
+      '<h2 id="termini">Termini za putovanje ' + esc(d.u || 'na ovu destinaciju') + '</h2>' +
       (termini.length
         ? '<p>Pored termina iz ponude, ovo su datumi sa najpovoljnijim direktnim letovima iz Beograda' + (noci ? ', za ' + (noci - 1 >= 2 ? (noci - 1) + '–' : '') + (noci + 1) + ' noćenja' : '') + '. Klikni na termin koji ti odgovara i javićemo ti tačnu cenu za let i smeštaj.</p>' +
           '<ul class="dest-termini">' + termini.map(function (x) {
@@ -510,7 +511,7 @@ function sitemap(dest) {
 }
 
 /* ---------- Kopiranje fajlova ---------- */
-var NE_OBJAVLJUJ = ['build.js', 'destinacije.js', 'letovi.js'];
+var NE_OBJAVLJUJ = ['build.js', 'destinacije.js', 'termini.js'];
 var EKSTENZIJE = ['.html', '.css', '.js', '.txt', '.svg', '.png', '.ico', '.webmanifest'];
 
 function kopirajFolder(izvor, cilj) {
