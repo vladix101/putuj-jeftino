@@ -9,25 +9,29 @@ on:
 jobs:
   postavi:
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
+    defaults:
+      run:
+        working-directory: provera
     steps:
       - uses: actions/checkout@v4
 
       - name: Proveri da postoji GitHub token
-        env:
-          GH_DISPATCH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
         run: |
-          if [ -z "$GH_DISPATCH_TOKEN" ]; then
+          if [ -z "$GH_TOKEN" ]; then
             echo "::error::Nedostaje tajna GH_DISPATCH_TOKEN (GitHub token sa dozvolom Actions: Read and write)."
             exit 1
           fi
 
       - name: Objavi Worker na Cloudflare
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: provera
-          command: deploy
-          secrets: GH_TOKEN
-        env:
-          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
+        run: |
+          if ! npx --yes wrangler@4 deploy; then
+            echo "::error::Cloudflare je odbio objavu Worker-a. Cloudflare API tokenu (CLOUDFLARE_API_TOKEN) dodaj dozvolu Account → Workers Scripts → Edit."
+            exit 1
+          fi
+
+      - name: Sačuvaj GitHub token u Worker-u
+        run: printf '%s' "$GH_TOKEN" | npx --yes wrangler@4 secret put GH_TOKEN
