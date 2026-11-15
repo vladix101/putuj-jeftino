@@ -1,0 +1,33 @@
+name: Postavi proveru notesa (Cloudflare Worker)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["provera/**", ".github/workflows/provera.yml"]
+
+jobs:
+  postavi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Proveri da postoji GitHub token
+        env:
+          GH_DISPATCH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$GH_DISPATCH_TOKEN" ]; then
+            echo "::error::Nedostaje tajna GH_DISPATCH_TOKEN (GitHub token sa dozvolom Actions: Read and write)."
+            exit 1
+          fi
+
+      - name: Objavi Worker na Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: provera
+          command: deploy
+          secrets: GH_TOKEN
+        env:
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
