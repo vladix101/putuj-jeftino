@@ -1,0 +1,14 @@
+name: Proba Worker-a za proveru notesa
+
+on:
+  workflow_dispatch:
+
+jobs:
+  proba:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pozovi Worker i ispiši odgovor
+        run: |
+          odgovor=$(curl -sS --max-time 60 https://putuj-jeftino-provera.milanvlogs9.workers.dev)
+          echo "Odgovor Worker-a: $odgovor"
+          case "$odgovor" in GREŠKA*) echo "::error::$odgovor"; exit 1;; esac
