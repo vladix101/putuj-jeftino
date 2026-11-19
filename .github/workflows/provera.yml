@@ -28,10 +28,25 @@ jobs:
 
       - name: Objavi Worker na Cloudflare
         run: |
-          if ! npx --yes wrangler@4 deploy; then
-            echo "::error::Cloudflare je odbio objavu Worker-a. Cloudflare API tokenu (CLOUDFLARE_API_TOKEN) dodaj dozvolu Account → Workers Scripts → Edit."
-            exit 1
+          set -o pipefail
+          if ! npx --yes wrangler@4 deploy 2>&1 | tee ../objava.log; then
+            echo "Objava sa workers.dev adresom nije uspela, pokušavam bez nje."
+            sed -i 's/^workers_dev = true/workers_dev = false/' wrangler.toml
+            if ! npx --yes wrangler@4 deploy; then
+              echo "::error::Cloudflare je odbio objavu Worker-a. Cloudflare API tokenu (CLOUDFLARE_API_TOKEN) dodaj dozvolu Account → Workers Scripts → Edit."
+              exit 1
+            fi
           fi
 
       - name: Sačuvaj GitHub token u Worker-u
         run: printf '%s' "$GH_TOKEN" | npx --yes wrangler@4 secret put GH_TOKEN
+
+      - name: Proba Worker-a (isto što radi na svakih 10 minuta)
+        run: |
+          adresa=$(grep -o 'https://[a-z0-9.-]*workers\.dev' ../objava.log | head -1 || true)
+          if [ -z "$adresa" ]; then echo "Worker nema javnu adresu, proba preskočena."; exit 0; fi
+          sleep 15
+          echo "Odgovor Worker-a:"
+          odgovor=$(curl -sS --max-time 60 "$adresa")
+          echo "$odgovor"
+          case "$odgovor" in GREŠKA*) echo "::error::$odgovor"; exit 1;; esac

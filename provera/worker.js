@@ -14,35 +14,36 @@ async function otisak(buf) {
 }
 
 async function proveri(env) {
-  const notes = await fetch(DRIVE_URL, { redirect: 'follow' });
-  if (!notes.ok) return 'Drive status ' + notes.status;
+  const notes = await fetch(DRIVE_URL, { redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0 (putuj-jeftino-provera)' } });
+  if (!notes.ok) return 'GREŠKA: Drive status ' + notes.status + ' (' + notes.url + ')';
   const buf = await notes.arrayBuffer();
-  if (!new TextDecoder().decode(buf).includes('NAJJEFTINIJI LETOVI')) return 'Fajl ne liči na notes';
+  const tekst = new TextDecoder().decode(buf);
+  if (!tekst.includes('NAJJEFTINIJI LETOVI')) return 'GREŠKA: Drive nije vratio notes (' + notes.url + '): ' + tekst.slice(0, 200).replace(/\s+/g, ' ');
   const novi = await otisak(buf);
 
   const auth = { ...GH, 'Authorization': 'Bearer ' + env.GH_TOKEN };
   const r = await fetch('https://api.github.com/repos/' + REPO + '/contents/_letovi/notes.sha256?ref=main', { headers: { ...auth, 'Accept': 'application/vnd.github.raw' } });
-  if (!r.ok) return 'GitHub status ' + r.status;
+  if (!r.ok) return 'GREŠKA: GitHub (čitanje otiska) status ' + r.status;
   const stari = (await r.text()).trim();
-  if (stari === novi) return 'Notes nije menjan';
+  if (stari === novi) return 'OK: notes nije menjan (otisak ' + novi.slice(0, 12) + ')';
 
   // Da ne pokrene dva puta dok prethodna akcija još radi
   const aktivne = await fetch('https://api.github.com/repos/' + REPO + '/actions/workflows/deploy.yml/runs?per_page=5', { headers: auth });
   if (aktivne.ok) {
     const j = await aktivne.json();
-    if ((j.workflow_runs || []).some(x => x.status !== 'completed')) return 'Akcija već radi';
+    if ((j.workflow_runs || []).some(x => x.status !== 'completed')) return 'OK: akcija već radi';
   }
   const d = await fetch('https://api.github.com/repos/' + REPO + '/actions/workflows/deploy.yml/dispatches', {
     method: 'POST', headers: auth, body: JSON.stringify({ ref: 'main' })
   });
-  return d.status === 204 ? 'Notes je izmenjen, akcija pokrenuta' : 'Pokretanje nije uspelo: ' + d.status + ' ' + (await d.text());
+  return d.status === 204 ? 'OK: notes je izmenjen, akcija pokrenuta' : 'GREŠKA: pokretanje akcije nije uspelo: ' + d.status + ' ' + (await d.text()).slice(0, 300);
 }
 
 export default {
   async scheduled(event, env, ctx) {
-    console.log(await proveri(env));
+    console.log(await proveri(env).catch(e => 'GREŠKA: ' + e.message));
   },
   async fetch(req, env) {
-    return new Response(await proveri(env) + '\n', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+    return new Response(await proveri(env).catch(e => 'GREŠKA: ' + e.message) + '\n', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
   }
 };
