@@ -164,9 +164,8 @@ window.PONUDE = [
     trajanje: "5 noćenja",
     cena: 235,
     opis: "Grad na obali Kipra, sa šetalištem uz more i starim delom grada nadomak plaže.",
-    detalji: "Pet noćenja u Larnaki na Kipru. U cenu su uključeni povratni let, smeštaj i doručak. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
-    ukljuceno: ["Povratna avio karta", "Smeštaj 5 noćenja", "Doručak"],
-    dorucak: true,
+    detalji: "Pet noćenja u Larnaki na Kipru. U cenu su uključeni povratni let i smeštaj. Pošalji upit i javićemo ti sve detalje o letu i smeštaju.",
+    ukljuceno: ["Povratna avio karta", "Smeštaj 5 noćenja"],
     primer: false
   },
   {
