@@ -1680,6 +1680,7 @@ body.menu-open .wa-fab { opacity: 0 !important; visibility: hidden !important; }
   .dest-termini { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .7rem; }
   .dest-termini li:nth-child(n+5) { display: block; }
   .dest-termini li:nth-child(3):last-child { grid-column: auto; }
+  .dest-termini:has(> li:nth-child(4):last-child) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .termin { padding: 1.1rem .5rem .9rem; }
   .termin-krug { width: 50px; height: 50px; }
   .termin-krug b { font-size: 1.3rem; }

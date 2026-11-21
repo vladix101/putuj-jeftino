@@ -16,7 +16,6 @@ var KOREN = __dirname;
 var FOLDER = path.join(KOREN, '_letovi');
 var DRIVE_ID = '1_tQC9yRSKx8RuaNBaBOhz2DxvkecB3fx';
 var DRIVE_URL = 'https://drive.google.com/uc?export=download&id=' + DRIVE_ID;
-var BROJ_TERMINA = 5;
 
 global.window = {};
 require(path.join(KOREN, 'ponude.js'));
@@ -131,9 +130,8 @@ function terminiZaSajt(r) {
       var k = x.polazak + '|' + x.povratak;
       if (vidjeno[k]) return false;
       return (vidjeno[k] = true);
-    }).slice(0, BROJ_TERMINA)
-      .sort(function (a, b) { return a.polazak < b.polazak ? -1 : a.polazak > b.polazak ? 1 : 0; })
-      .map(function (x) { return { polazak: x.polazak, povratak: x.povratak, noci: x.noci }; });
+    }).map(function (x) { return { polazak: x.polazak, povratak: x.povratak, noci: x.noci }; });
+    // Redosled je od najjeftinijeg; sajt (build.js) izbacuje termin iz ponude i prikazuje 5 najjeftinijih po datumu.
   });
   return out;
 }

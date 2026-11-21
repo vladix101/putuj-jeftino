@@ -58,16 +58,6 @@
     ],
     "stokholm": [
       {
-        "polazak": "2026-12-03",
-        "povratak": "2026-12-06",
-        "noci": 3
-      },
-      {
-        "polazak": "2027-01-18",
-        "povratak": "2027-01-20",
-        "noci": 2
-      },
-      {
         "polazak": "2027-01-19",
         "povratak": "2027-01-23",
         "noci": 4
@@ -78,27 +68,22 @@
         "noci": 4
       },
       {
+        "polazak": "2027-01-18",
+        "povratak": "2027-01-20",
+        "noci": 2
+      },
+      {
         "polazak": "2027-01-20",
         "povratak": "2027-01-23",
+        "noci": 3
+      },
+      {
+        "polazak": "2026-12-03",
+        "povratak": "2026-12-06",
         "noci": 3
       }
     ],
     "malme": [
-      {
-        "polazak": "2026-12-04",
-        "povratak": "2026-12-06",
-        "noci": 2
-      },
-      {
-        "polazak": "2026-12-07",
-        "povratak": "2026-12-11",
-        "noci": 4
-      },
-      {
-        "polazak": "2026-12-11",
-        "povratak": "2026-12-13",
-        "noci": 2
-      },
       {
         "polazak": "2027-01-15",
         "povratak": "2027-01-17",
@@ -108,19 +93,24 @@
         "polazak": "2027-01-15",
         "povratak": "2027-01-18",
         "noci": 3
-      }
-    ],
-    "atina": [
+      },
       {
-        "polazak": "2027-01-12",
-        "povratak": "2027-01-14",
+        "polazak": "2026-12-07",
+        "povratak": "2026-12-11",
+        "noci": 4
+      },
+      {
+        "polazak": "2026-12-04",
+        "povratak": "2026-12-06",
         "noci": 2
       },
       {
-        "polazak": "2027-01-12",
-        "povratak": "2027-01-15",
-        "noci": 3
-      },
+        "polazak": "2026-12-11",
+        "povratak": "2026-12-13",
+        "noci": 2
+      }
+    ],
+    "atina": [
       {
         "polazak": "2027-01-14",
         "povratak": "2027-01-18",
@@ -135,9 +125,24 @@
         "polazak": "2027-01-16",
         "povratak": "2027-01-18",
         "noci": 2
+      },
+      {
+        "polazak": "2027-01-12",
+        "povratak": "2027-01-14",
+        "noci": 2
+      },
+      {
+        "polazak": "2027-01-12",
+        "povratak": "2027-01-15",
+        "noci": 3
       }
     ],
     "larnaka": [
+      {
+        "polazak": "2027-01-15",
+        "povratak": "2027-01-18",
+        "noci": 3
+      },
       {
         "polazak": "2026-12-10",
         "povratak": "2026-12-14",
@@ -152,18 +157,13 @@
         "polazak": "2026-12-11",
         "povratak": "2026-12-13",
         "noci": 2
-      },
-      {
-        "polazak": "2027-01-15",
-        "povratak": "2027-01-18",
-        "noci": 3
       }
     ],
     "alikante": [
       {
-        "polazak": "2026-12-17",
-        "povratak": "2026-12-22",
-        "noci": 5
+        "polazak": "2027-01-16",
+        "povratak": "2027-01-19",
+        "noci": 3
       },
       {
         "polazak": "2026-12-19",
@@ -171,19 +171,19 @@
         "noci": 5
       },
       {
-        "polazak": "2026-12-19",
-        "povratak": "2026-12-22",
-        "noci": 3
-      },
-      {
-        "polazak": "2027-01-16",
-        "povratak": "2027-01-19",
-        "noci": 3
-      },
-      {
         "polazak": "2027-01-19",
         "povratak": "2027-01-23",
         "noci": 4
+      },
+      {
+        "polazak": "2026-12-17",
+        "povratak": "2026-12-22",
+        "noci": 5
+      },
+      {
+        "polazak": "2026-12-19",
+        "povratak": "2026-12-22",
+        "noci": 3
       }
     ],
     "rim": [
@@ -242,6 +242,21 @@
     ],
     "malta": [
       {
+        "polazak": "2027-01-17",
+        "povratak": "2027-01-21",
+        "noci": 4
+      },
+      {
+        "polazak": "2027-01-14",
+        "povratak": "2027-01-19",
+        "noci": 5
+      },
+      {
+        "polazak": "2027-01-19",
+        "povratak": "2027-01-24",
+        "noci": 5
+      },
+      {
         "polazak": "2026-12-13",
         "povratak": "2026-12-17",
         "noci": 4
@@ -250,33 +265,13 @@
         "polazak": "2026-12-24",
         "povratak": "2026-12-29",
         "noci": 5
-      },
-      {
-        "polazak": "2027-01-14",
-        "povratak": "2027-01-19",
-        "noci": 5
-      },
-      {
-        "polazak": "2027-01-17",
-        "povratak": "2027-01-21",
-        "noci": 4
-      },
-      {
-        "polazak": "2027-01-19",
-        "povratak": "2027-01-24",
-        "noci": 5
       }
     ],
     "madrid": [
       {
-        "polazak": "2026-12-04",
-        "povratak": "2026-12-07",
-        "noci": 3
-      },
-      {
-        "polazak": "2026-12-11",
-        "povratak": "2026-12-14",
-        "noci": 3
+        "polazak": "2026-12-16",
+        "povratak": "2026-12-18",
+        "noci": 2
       },
       {
         "polazak": "2026-12-14",
@@ -284,30 +279,25 @@
         "noci": 2
       },
       {
-        "polazak": "2026-12-16",
-        "povratak": "2026-12-18",
-        "noci": 2
+        "polazak": "2026-12-04",
+        "povratak": "2026-12-07",
+        "noci": 3
       },
       {
         "polazak": "2026-12-18",
         "povratak": "2026-12-21",
         "noci": 3
+      },
+      {
+        "polazak": "2026-12-11",
+        "povratak": "2026-12-14",
+        "noci": 3
       }
     ],
     "pariz": [
       {
-        "polazak": "2026-12-09",
-        "povratak": "2026-12-11",
-        "noci": 2
-      },
-      {
-        "polazak": "2027-01-15",
-        "povratak": "2027-01-18",
-        "noci": 3
-      },
-      {
-        "polazak": "2027-01-15",
-        "povratak": "2027-01-17",
+        "polazak": "2027-01-18",
+        "povratak": "2027-01-20",
         "noci": 2
       },
       {
@@ -316,12 +306,27 @@
         "noci": 3
       },
       {
-        "polazak": "2027-01-18",
-        "povratak": "2027-01-20",
+        "polazak": "2027-01-15",
+        "povratak": "2027-01-18",
+        "noci": 3
+      },
+      {
+        "polazak": "2026-12-09",
+        "povratak": "2026-12-11",
+        "noci": 2
+      },
+      {
+        "polazak": "2027-01-15",
+        "povratak": "2027-01-17",
         "noci": 2
       }
     ],
     "nica": [
+      {
+        "polazak": "2027-01-16",
+        "povratak": "2027-01-21",
+        "noci": 5
+      },
       {
         "polazak": "2026-12-05",
         "povratak": "2026-12-10",
@@ -341,29 +346,9 @@
         "polazak": "2026-12-22",
         "povratak": "2026-12-26",
         "noci": 4
-      },
-      {
-        "polazak": "2027-01-16",
-        "povratak": "2027-01-21",
-        "noci": 5
       }
     ],
     "barselona": [
-      {
-        "polazak": "2026-12-14",
-        "povratak": "2026-12-17",
-        "noci": 3
-      },
-      {
-        "polazak": "2026-12-21",
-        "povratak": "2026-12-24",
-        "noci": 3
-      },
-      {
-        "polazak": "2026-12-23",
-        "povratak": "2026-12-25",
-        "noci": 2
-      },
       {
         "polazak": "2027-01-15",
         "povratak": "2027-01-18",
@@ -373,6 +358,21 @@
         "polazak": "2027-01-15",
         "povratak": "2027-01-17",
         "noci": 2
+      },
+      {
+        "polazak": "2026-12-23",
+        "povratak": "2026-12-25",
+        "noci": 2
+      },
+      {
+        "polazak": "2026-12-14",
+        "povratak": "2026-12-17",
+        "noci": 3
+      },
+      {
+        "polazak": "2026-12-21",
+        "povratak": "2026-12-24",
+        "noci": 3
       }
     ]
   }

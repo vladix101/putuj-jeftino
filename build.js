@@ -52,6 +52,22 @@ function razlikaDana(a, b) { return Math.round((new Date(b + 'T00:00:00Z') - new
 function nocenja(n) { return n === 1 ? 'noćenje' : 'noćenja'; }
 
 // "2026-12-06", "2026-12-09" -> "6–9. dec 2026."; preko meseca/godine -> "30. dec 2026 – 2. jan 2027."
+// "4–7. dec 2026.", "30. nov – 3. dec 2026.", "30. dec 2026 – 2. jan 2027." -> { od: "2026-12-04", do: "2026-12-07" }
+function datumIzTeksta(t) {
+  var delovi = String(t || '').replace(/\.$/, '').split(/\s*[–-]\s*/);
+  if (delovi.length !== 2) return null;
+  function citaj(x) {
+    var m = x.trim().match(/^(\d{1,2})\.?(?:\s+([a-zčćžšđ]+))?(?:\s+(\d{4}))?\.?$/i);
+    return m ? { d: +m[1], m: m[2] ? MESECI.indexOf(m[2].toLowerCase().slice(0, 3)) + 1 : 0, g: m[3] ? +m[3] : 0 } : null;
+  }
+  var a = citaj(delovi[0]), b = citaj(delovi[1]);
+  if (!a || !b || !b.m || !b.g) return null;
+  if (!a.m) a.m = b.m;
+  if (!a.g) a.g = a.m > b.m ? b.g - 1 : b.g;
+  function iso(x) { return x.g + '-' + String(x.m).padStart(2, '0') + '-' + String(x.d).padStart(2, '0'); }
+  return { od: iso(a), do: iso(b) };
+}
+
 function opsegDatuma(od, doo) {
   var a = od.split('-').map(Number), b = doo.split('-').map(Number);
   if (a[0] === b[0] && a[1] === b[1]) return a[2] + '–' + b[2] + '. ' + MESECI[b[1] - 1] + ' ' + b[0] + '.';
@@ -272,7 +288,13 @@ function stranica(d, sveDest) {
     : '<p>Trenutno nemamo aktivnu ponudu za ovu destinaciju, ali se cene prevoza i smeštaja stalno menjaju. Pošalji nam upit sa okvirnim terminom i proverićemo šta trenutno može da se nađe. Cene koje objavljujemo važe kada putuju dve ili više osoba.</p>';
 
   var danasIso = new Date().toISOString().slice(0, 10);
-  var termini = (TERMINI[d.slug] || []).filter(function (x) { return x.polazak && x.povratak && x.polazak > danasIso; });
+  // Termini iz notesa su poređani od najjeftinijeg. Izbacuju se prošli i oni koji su već u ponudi,
+  // pa se prikazuje 5 najjeftinijih preostalih, poređanih po datumu.
+  var uPonudi = {};
+  d.ponude.forEach(function (p) { var o = datumIzTeksta(p.datum); if (o) uPonudi[o.od + '|' + o.do] = true; });
+  var termini = (TERMINI[d.slug] || []).filter(function (x) {
+    return x.polazak && x.povratak && x.polazak > danasIso && !uPonudi[x.polazak + '|' + x.povratak];
+  }).slice(0, 5).sort(function (a, b) { return a.polazak < b.polazak ? -1 : a.polazak > b.polazak ? 1 : 0; });
   var noci = imaPonudu ? parseInt(prva.trajanje, 10) : 0;
   // Termini se prikazuju za destinacije do kojih se leti (i kad danas nema pronađenih datuma, zbog poziva da pošalju svoj termin)
   // Novogodišnje ponude imaju fiksne datume, pa za njih nema ovog odeljka
@@ -283,7 +305,7 @@ function stranica(d, sveDest) {
     '<section aria-labelledby="termini" class="dest-termini-sekcija">' +
       '<h2 id="termini">Termini za putovanje ' + esc(d.u || 'na ovu destinaciju') + '</h2>' +
       (termini.length
-        ? '<p>Pored termina iz ponude, ovo su datumi sa najpovoljnijim direktnim letovima iz Beograda' + (noci ? ', za ' + (noci - 1 >= 2 ? (noci - 1) + '–' : '') + (noci + 1) + ' noćenja' : '') + '. Klikni na termin koji ti odgovara i javićemo ti tačnu cenu za let i smeštaj.</p>' +
+        ? '<p>Pored termina iz ponude, ovo su datumi sa najpovoljnijim direktnim letovima iz Beograda' + (noci ? ', za ' + Math.max(2, noci - 1) + '–' + (noci + 1) + ' noćenja' : '') + '. Klikni na termin koji ti odgovara i javićemo ti tačnu cenu za let i smeštaj.</p>' +
           '<ul class="dest-termini">' + termini.map(function (x) {
             var tekst = opsegDatuma(x.polazak, x.povratak);
             var n = x.noci || razlikaDana(x.polazak, x.povratak);
